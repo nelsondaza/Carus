@@ -1,4 +1,4 @@
-/*! HTML5 Boilerplate v5.2.0 | MIT License | https://html5boilerplate.com/ */
+/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 /*
  * What follows is the result of much research on cross-browser styling.
@@ -10,28 +10,30 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
-html {
-    color: #222;
-    font-size: 1em;
-    line-height: 1.4;
+html,
+button,
+input,
+select,
+textarea {
+	color: @font-color;
 }
 
 /*
- * Remove text-shadow in selection highlight:
- * https://twitter.com/miketaylr/status/12228805301
- *
+ * Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.
  * Customize the background color to match your design.
  */
 
 ::-moz-selection {
-    background: #b3d4fc;
-    text-shadow: none;
+	background: #c8001a;
+	color: #FFF;
+	text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
-    text-shadow: none;
+	background: #c8001a;
+	color: #FFF;
+	text-shadow: none;
 }
 
 /*
@@ -39,27 +41,24 @@ html {
  */
 
 hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
+	display: block;
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin: 1em 0;
+	padding: 0;
 }
 
 /*
- * Remove the gap between audio, canvas, iframes,
- * images, videos and the bottom of their containers:
- * https://github.com/h5bp/html5-boilerplate/issues/440
+ * Remove the gap between images, videos, audio and canvas and the bottom of
+ * their containers: h5bp.com/i/440
  */
 
 audio,
 canvas,
-iframe,
 img,
-svg,
 video {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 /*
@@ -67,9 +66,9 @@ video {
  */
 
 fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
+	border: 0;
+	margin: 0;
+	padding: 0;
 }
 
 /*
@@ -77,90 +76,92 @@ fieldset {
  */
 
 textarea {
-    resize: vertical;
+	resize: vertical;
 }
 
 /* ==========================================================================
-   Browser Upgrade Prompt
+   Browse Happy prompt
    ========================================================================== */
 
-.browserupgrade {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
+.browsehappy {
+	margin: 0.2em 0;
+	background: #ccc;
+	color: #000;
+	padding: 0.2em 0;
 }
 
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ==========================================================================
    Helper classes
    ========================================================================== */
 
 /*
- * Hide visually and from screen readers
+ * Image replacement
+ */
+
+.ir {
+	background-color: transparent;
+	border: 0;
+	overflow: hidden;
+	/* IE 6/7 fallback */
+	*text-indent: -9999px;
+}
+
+.ir:before {
+	content: "";
+	display: block;
+	width: 0;
+	height: 150%;
+}
+
+/*
+ * Hide from both screenreaders and browsers: h5bp.com/u
  */
 
 .hidden {
-    display: none !important;
+	display: none !important;
+	visibility: hidden;
 }
 
 /*
- * Hide only visually, but have it available for screen readers:
- * http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ * Hide only visually, but have it available for screenreaders: h5bp.com/v
  */
 
 .visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
 }
 
 /*
- * Extends the .visuallyhidden class to allow the element
- * to be focusable when navigated to via the keyboard:
- * https://www.drupal.org/node/897638
+ * Extends the .visuallyhidden class to allow the element to be focusable
+ * when navigated to via the keyboard: h5bp.com/p
  */
 
 .visuallyhidden.focusable:active,
 .visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
 }
 
 /*
- * Hide visually and from screen readers, but maintain layout
+ * Hide visually and from screenreaders, but maintain layout
  */
 
 .invisible {
-    visibility: hidden;
+	visibility: hidden;
 }
 
 /*
@@ -177,12 +178,21 @@ textarea {
 
 .clearfix:before,
 .clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+	content: " "; /* 1 */
+	display: table; /* 2 */
 }
 
 .clearfix:after {
-    clear: both;
+	clear: both;
+}
+
+/*
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+
+.clearfix {
+	*zoom: 1;
 }
 
 /* ==========================================================================
@@ -192,91 +202,85 @@ textarea {
    ========================================================================== */
 
 @media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
+	/* Style adjustments for viewports that meet the condition */
 }
 
 @media print,
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 1.25dppx),
-       (min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
+(-o-min-device-pixel-ratio: 5/4),
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 120dpi) {
+	/* Style adjustments for high resolution devices */
 }
 
 /* ==========================================================================
    Print styles.
-   Inlined to avoid the additional HTTP request:
-   http://www.phpied.com/delay-loading-your-print-css/
+   Inlined to avoid required HTTP connection: h5bp.com/r
    ========================================================================== */
 
 @media print {
-    *,
-    *:before,
-    *:after,
-    *:first-letter,
-    *:first-line {
-        background: transparent !important;
-        color: #000 !important; /* Black prints faster:
-                                   http://www.sanbeiji.com/archives/953 */
-        box-shadow: none !important;
-        text-shadow: none !important;
-    }
+	* {
+		background: transparent !important;
+		color: #000 !important; /* Black prints faster: h5bp.com/s */
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
 
-    a,
-    a:visited {
-        text-decoration: underline;
-    }
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
 
-    a[href]:after {
-        content: " (" attr(href) ")";
-    }
+	a[href]:after {
+		content: " (" attr(href) ")";
+	}
 
-    abbr[title]:after {
-        content: " (" attr(title) ")";
-    }
+	abbr[title]:after {
+		content: " (" attr(title) ")";
+	}
 
-    /*
-     * Don't show links that are fragment identifiers,
-     * or use the `javascript:` pseudo protocol
-     */
+	/*
+	 * Don't show links for images, or javascript/internal links
+	 */
+	.ir a:after,
+	a[href^="javascript:"]:after,
+	a[href^="#"]:after {
+		content: "";
+	}
 
-    a[href^="#"]:after,
-    a[href^="javascript:"]:after {
-        content: "";
-    }
+	pre,
+	blockquote {
+		border: 1px solid #999;
+		page-break-inside: avoid;
+	}
 
-    pre,
-    blockquote {
-        border: 1px solid #999;
-        page-break-inside: avoid;
-    }
+	thead {
+		display: table-header-group; /* h5bp.com/t */
+	}
 
-    /*
-     * Printing Tables:
-     * http://css-discuss.incutio.com/wiki/Printing_Tables
-     */
+	tr,
+	img {
+		page-break-inside: avoid;
+	}
 
-    thead {
-        display: table-header-group;
-    }
+	img {
+		max-width: 100% !important;
+	}
 
-    tr,
-    img {
-        page-break-inside: avoid;
-    }
+	@page {
+		margin: 0.5cm;
+	}
 
-    img {
-        max-width: 100% !important;
-    }
+	p,
+	h2,
+	h3 {
+		orphans: 3;
+		widows: 3;
+	}
 
-    p,
-    h2,
-    h3 {
-        orphans: 3;
-        widows: 3;
-    }
-
-    h2,
-    h3 {
-        page-break-after: avoid;
-    }
+	h2,
+	h3 {
+		page-break-after: avoid;
+	}
 }
+
+

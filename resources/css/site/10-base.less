@@ -3,7 +3,7 @@
 @font-primary-cond: @font-primary;
 @font-secondary: @font-primary;
 
-@text-color: #444;
+@text-color: #333;
 @text-size: 14px;
 
 @header-height: 54px;
@@ -82,11 +82,11 @@
 	opacity: @opacity;
 }
 
-.background-size( @w: auto, @h: auto ) {
-	background-size: @w @h;
-	-moz-background-size: @w @h;
-	-o-background-size: @w @h;
-	-webkit-background-size: @w @h;
+.background-size( @bs: auto ) {
+	background-size: @bs;
+	-moz-background-size: @bs;
+	-o-background-size: @bs;
+	-webkit-background-size: @bs;
 }
 
 .transform( @action ) {

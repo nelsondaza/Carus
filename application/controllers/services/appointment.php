@@ -110,7 +110,7 @@
 								), $html );
 
 								$this->email->to( $account->email );// change it to yours
-								$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+								$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 								$this->email->subject( 'Inscripción de clase' );
 								$this->email->message( $html );
 								$this->email->send();
@@ -179,7 +179,7 @@
 
 				$this->email->to( $account['account_email'] );// change it to yours
 				$this->email->bcc( 'nelson.daza@imagendigital.co' );// change it to yours
-				$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+				$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 				$this->email->subject( '¡Recuerda tu cita!' );
 				$this->email->message( $html );
 

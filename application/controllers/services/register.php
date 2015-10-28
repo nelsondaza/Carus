@@ -100,7 +100,7 @@
 
 				$this->email->to( $email );// change it to yours
 				$this->email->bcc( 'nelson.daza@imagendigital.co' );// change it to yours
-				$this->email->from( 'no-reply@reebokacademy.com', 'Reebok Academy' );
+				$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 				$this->email->subject( '¡FELICITACIONES!' );
 				$this->email->message( $html );
 				$this->email->send();
@@ -130,7 +130,7 @@
 				flush();
 				$this->email->to( $account->email );// change it to yours
 				$this->email->to( 'nelson.daza@imagendigital.co' );// change it to yours
-				$this->email->from( 'no-reply@reebokacademy.com', 'Reebok Academy' );
+				$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 				$this->email->subject( '¡FELICITACIONES! ' );
 				$this->email->message( $html );
 				$this->email->send();

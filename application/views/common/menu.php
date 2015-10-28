@@ -15,7 +15,7 @@
 			<span class="icon-bar"></span>
 		</a>
 	</span>
-	<span class="logo"><a href="http://reebokcardioultra.com/">Reebok</a></span>
+	<span class="logo"><a href="/"></a></span>
 	<div class="userHeader" style="display: <?= ( $this->authentication->is_signed_in( ) ? 'block' : 'none' ) ?>">
 		<div class="container">
 			<span class="title">Bienvenida:</span> <a href="#"><span class="user"><?= ( isset( $account_details ) ? htmlentities( ( $account_details->fullname ? $account_details->fullname : $account_details->firstname . ' ' . $account_details->lastname ) ) : '' ) ?></span> <span data-icon="n" class="menuIcon"></span></a>

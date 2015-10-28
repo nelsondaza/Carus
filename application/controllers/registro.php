@@ -25,8 +25,8 @@
 			$html = file_get_contents( FCPATH . 'img/mailing/bienvenido.html' );
 			$html = preg_replace( "/(['\"]?)img\\//", '$1' . base_url() . 'img/mailing/img/', $html );
 
-			$this->email->to( 'nelson.daza@imagendigital.co,yady_marcela@hotmail.com,marcela.tarazona@imagendigital.co' );// change it to yours
-			$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+			$this->email->to( 'nelson.daza@gmail.com' );// change it to yours
+			$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 			$this->email->subject( '¡Bienvenida!' );
 			$this->email->set_mailtype('html');
 			$this->email->message( $html );
@@ -36,8 +36,8 @@
 			$html = file_get_contents( FCPATH . 'img/mailing/inscrita.html' );
 			$html = preg_replace( "/(['\"]?)img\\//", '$1' . base_url() . 'img/mailing/img/', $html );
 
-			$this->email->to( 'nelson.daza@imagendigital.co,yady_marcela@hotmail.com,marcela.tarazona@imagendigital.co' );// change it to yours
-			$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+			$this->email->to( 'nelson.daza@gmail.com' );// change it to yours
+			$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 			$this->email->subject( '¡Inscrita!' );
 			$this->email->message( $html );
 
@@ -46,8 +46,8 @@
 			$html = file_get_contents( FCPATH . 'img/mailing/clave.html' );
 			$html = preg_replace( "/(['\"]?)img\\//", '$1' . base_url() . 'img/mailing/img/', $html );
 
-			$this->email->to( 'nelson.daza@imagendigital.co,yady_marcela@hotmail.com,marcela.tarazona@imagendigital.co' );// change it to yours
-			$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+			$this->email->to( 'nelson.daza@gmail.com' );// change it to yours
+			$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 			$this->email->subject( '¡Clave!' );
 			$this->email->message( $html );
 
@@ -56,8 +56,8 @@
 			$html = file_get_contents( FCPATH . 'img/mailing/recuerda.html' );
 			$html = preg_replace( "/(['\"]?)img\\//", '$1' . base_url() . 'img/mailing/img/', $html );
 
-			$this->email->to( 'nelson.daza@imagendigital.co,yady_marcela@hotmail.com,marcela.tarazona@imagendigital.co' );// change it to yours
-			$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+			$this->email->to( 'nelson.daza@gmail.com' );// change it to yours
+			$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 			$this->email->subject( '¡Recuerda!' );
 			$this->email->message( $html );
 
@@ -182,7 +182,7 @@
 						$this->email->bcc( 'nelson.daza@usa.com' );// change it to yours
 						$this->email->bcc( 'nelson.daza@outlook.com' );// change it to yours
 						$this->email->bcc( 'nelson.daza@imagendigital.com' );// change it to yours
-						$this->email->from( 'no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra' );
+						$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
 						$this->email->subject( '¡Bienvenida!' );
 						$this->email->message( $html );
 

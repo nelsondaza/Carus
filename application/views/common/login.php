@@ -18,11 +18,10 @@
 	<div class="fold <?= ( $this->authentication->is_signed_in( ) ? 'bar' : '' ) ?>">
 		<div class="container">
 			<div class="logo">
-				<a href="<?= base_url() ?>">Reebok</a>
+				<a href="<?= base_url() ?>">Logo</a>
 			</div>
 			<div class="copy">
 				<h1>Vive la experiencia</h1>
-				<h2>REEBOK CARDIO ULTRA</h2>
 				<p>Regístrate y asiste a una increíble clase gratuita de cardio basada en los programas de Les Mills. Además conoce los nuevos Cardio Ultra, el calzado con el cual dominarás en todas tus clases.</p>
 			</div>
 			<div class="boxFold">

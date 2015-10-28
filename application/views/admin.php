@@ -5,18 +5,20 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
     <?= $this->load->view('admin/head', array('title' => lang('website_home') ) ) ?>
-    <link rel="stylesheet" href="<?= base_url() ?>resources/css/vendor/jquery.gridster.css">
-    <script src="<?= base_url() ?>resources/js/vendor/jquery.gridster.with-extras.min.js"></script>
-	<script src="http://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
-    <?= $this->load->view('admin/header') ?>
+    <?= $this->load->view('admin/header', array('current' => 'home')) ?>
     <div class="container content">
-        <?= $this->load->view('admin/menu', array('current' => 'home') ) ?>
         <div class="sub-header">
             <i class="icon home"></i> <?= lang('website_home') ?>
         </div>
         <div class="section">
+			<button class="ui black button consult-action">
+				<i class="icon doctor"></i>
+				Consulta
+			</button>
+			<br>
+			<br>
 		<div class="flow">
 			<div class="page">
 				<div class="holder" style="height: 704px !important;">
@@ -24,19 +26,19 @@
 						<div class="gridster">
 							<div class="widget teal" data-row="1" data-col="1" data-sizex="4" data-sizey="3">
 								<div class="head">
-                                    INSCRITOS POR CIUDAD
+                                    PACIENTES POR GÉNERO
 								</div>
 								<div class="body" id="upp"></div>
 							</div>
 							<div class="widget teal" data-row="1" data-col="5" data-sizex="4" data-sizey="3">
 								<div class="head">
-                                    REGISTROS POR GÉNERO
+									PACIENTES POR GRUPO DE EDAD
 								</div>
 								<div class="body" id="upt"></div>
 							</div>
 							<div class="widget orange" data-row="5" data-col="1" data-sizex="8" data-sizey="3">
 								<div class="head">
-                                    REGISTROS POR DÍA
+                                    PACIENTES REGISTRADOS POR DÍA
 								</div>
 								<div class="body" id="uph"></div>
 							</div>
@@ -47,10 +49,10 @@
 			<div class="clearfix"></div>
 			<script type="text/javascript">
 				$(function(){ //DOM Ready
-					// x = 970 ==> ( 111 + 5 + 5 ) * 8 ==> ( width + margin-left + margin-right ) * columns = 968
+					// x = 1160 ==> ( 135 + 5 + 5 ) * 8 ==> ( width + margin-left + margin-right ) * columns = 968
 					// y = 653 ==> ( 100 + 4 + 4 ) * 6 ==> ( height + margin-top + margin-bottom ) * rows = 648
 					$(".flow .page .holder .widgets .gridster").gridster({
-						widget_base_dimensions: [111, 100],
+						widget_base_dimensions: [135, 100],
 						widget_margins: [5, 4],
 						widget_selector: 'div',
 						max_cols: 8,
@@ -69,20 +71,25 @@
 					});
 				});
 			</script>
-<?
+<?php
+	/*
 	//
-	$this->db->select('a3m_account_details.ciudad, COUNT(*) AS total');
-	$this->db->where('ciudad IS NOT NULL');
-	$this->db->group_by('ciudad');
-	$rows = $this->db->get('a3m_account_details')->result_array( );
+	$this->db->select('msf_patients.gender, COUNT(*) AS total');
+	$this->db->where('gender IS NOT NULL');
+	$this->db->group_by('gender');
+	$rows = $this->db->get('msf_patients')->result_array( );
 
-	$user_types = array( );
+	$user_types = array(
+        'M' => 0,
+        'F' => 0,
+        'I' => 0,
+    );
 	foreach( $rows as $row ) {
-		$user_types[$row['ciudad']] = $row['total'];
+		$user_types[$row['gender']] = $row['total'];
 	}
 
 	$pie = array(
-		'name' => 'Inscritos por Ciudad',
+		'name' => 'Pacientes por género',
 		'data' => $user_types
 	);
 ?>
@@ -113,11 +120,11 @@
 				type: 'pie',
 				name: ('<?= ( $pie['name'] ) ?>'),
 				data: [
-<?
+<?php
 		foreach( $pie['data'] as $key => $value ) {
 ?>
-					[('<?= ( $key ) ?>'), <?= (float)( $value ) ?> ],
-<?
+					['<?= ( $key == 'F' ? 'FEMENINO' : ( $key == 'M' ? 'MASCULINO' : 'INDEFINIDO' ) ) ?>', <?= (float)( $value ) ?> ],
+<?php
 		}
 ?>
 				]
@@ -125,25 +132,24 @@
 		});
 	});
 </script>
-<?
+<?php
 	// Users type
-	$this->db->select('
-		a3m_account_details.gender AS gender, COUNT(*) AS total
-		'
+	$this->db->select("
+		( IF( msf_patients.age IS NULL OR msf_patients.age <= 5, '≤ 5', IF( msf_patients.age >= 19, '≥ 19', '6-18' ) ) ) AS age_group, COUNT(*) AS total
+		", false
 	);
-	$this->db->where('a3m_account_details.gender IS NOT NULL');
-	$this->db->where('a3m_account_details.gender !=', '');
-	$this->db->group_by('a3m_account_details.gender');
-	$this->db->order_by('a3m_account_details.gender');
-	$rows = $this->db->get('a3m_account_details')->result_array( );
+	$this->db->where('msf_patients.gender IS NOT NULL');
+	$this->db->group_by('age_group');
+	$this->db->order_by('age');
+	$rows = $this->db->get('msf_patients')->result_array( );
 
 	$user_types = array( );
 	foreach( $rows as $row ) {
-		$user_types[( $row['gender'] == 'F' || $row['gender'] == 'f' ? 'Femenino' : 'Masculino' ) ] = $row['total'];
+		$user_types[$row['age_group']] = $row['total'];
 	}
 
 	$pie = array(
-		'name' => 'Registros por Género',
+		'name' => 'Pacientes por Grupo de Edad',
 		'data' => $user_types
 	);
 ?>
@@ -174,11 +180,11 @@
 				type: 'pie',
 				name: ('<?= ( $pie['name'] ) ?>'),
 				data: [
-<?
+<?php
 		foreach( $pie['data'] as $key => $value ) {
 ?>
 					[('<?= ( $key ) ?>'), <?= (float)( $value ) ?> ],
-<?
+<?php
 		}
 ?>
 				]
@@ -192,11 +198,12 @@
 	// Users type
 	$query = $this->db->query ( "
 		SELECT
-		LEFT(createdon, 10) AS fecha, COUNT(*) AS total
-		FROM a3m_account
-		WHERE createdon > '2015-03-10'
+		LEFT(creation, 10) AS fecha, COUNT(*) AS total
+		FROM msf_patients
+		WHERE creation > DATE_ADD(NOW(), INTERVAL -20 DAY)
+		AND gender IS NOT NULL
 		GROUP BY
-		LEFT(createdon, 10)
+		LEFT(creation, 10)
 		ORDER BY fecha ASC
 		" );
 	$rows = $query->result_array();
@@ -207,7 +214,7 @@
 	}
 
 	$pie = array(
-		'name' => 'Registros por día',
+		'name' => 'Pacientes registrados por día',
 		'data' => $user_types
 	);
 ?>
@@ -226,7 +233,7 @@
 			},
             xAxis: {
                 type: 'datetime',
-                minRange: 4 * 24 * 3600000 // fourteen days
+                minRange: 20 * 24 * 3600000 // 20 days
             },
 			plotOptions: {
                 area: {
@@ -252,16 +259,16 @@
 			series: [{
 				type: 'area',
                 pointInterval: 24 * 3600 * 1000,
-                pointStart: Date.UTC(2013, 2, 13),
+                pointStart: Date.UTC(<?= date("Y", strtotime("INTERVAL -20 DAY")) ?>, <?= date("m", strtotime("INTERVAL -20 DAY")) - 1 ?>, <?= date("d", strtotime("INTERVAL -20 DAY")) ?>),
 				name: ('<?= ( $pie['name'] ) ?>'),
 				data: [
-<?
+<?php
 		foreach( $pie['data'] as $key => $value ) {
 				$key = explode('-',$key);
 				$key[1]--;
 ?>
 					[Date.UTC(<?= implode(',', $key) ?>), <?= (float)( $value ) ?> ],
-<?
+<?php
 		}
 ?>
 				]
@@ -269,6 +276,9 @@
 		});
 	});
 </script>
+	<?php
+	*/
+?>
 </div>
         </div>
     </div>

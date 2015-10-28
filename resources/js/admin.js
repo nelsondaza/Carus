@@ -1,16 +1,12 @@
 $(function () {
 
-	var $menuVisible = false;
-
 	var $menu = $('#toc');
 	$menu.sidebar({
 		transition       : 'uncover',
 		mobileTransition : 'uncover'
 	});
 	$('.launch.button, .view-ui, .launch.item').on('click', function(event) {
-		if( $menuVisible ) {
-			$menu.sidebar('toggle');
-		}
+	$menu.sidebar('toggle');
 		event.preventDefault();
 	});
 

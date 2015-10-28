@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 $lang['sign_out_page_name'] = 'Salida';
-$lang['sign_out_heading'] = 'GRACIAS POR USAR ID ANALYTICS';
+$lang['sign_out_heading'] = 'GRACIAS POR USAR CARUS';
 $lang['sign_out_successful'] = 'Has salido del sistema de forma segura.';
 $lang['sign_out_go_to_home'] = 'Ingresar';
 

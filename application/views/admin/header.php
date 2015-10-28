@@ -1,10 +1,11 @@
+<?= $this->load->view('admin/menu', array('current' => ( isset( $current ) ? $current : '' ))) ?>
 <div class="ui fixed main menu">
 	<div class="container">
 		<div class="title item">
-			<a href="<?= base_url() ?>admin"><img src="resources/img/id.jpg" alt="ID"> <img src="resources/img/id_interactive.jpg" alt="Interactive"></a>
+			<a href="<?= base_url() ?>"><img src="<?= base_url() ?>resources/img/icon.png" alt="Carus"></a>
 		</div>
 		<div class="right menu">
-<?
+<?php
 	if ( $this->authentication->is_signed_in() ) {
 		$picture = ( isset( $account_details->picture ) && trim( $account_details->picture ) ? base_url().RES_DIR.$account_details->picture : base_url( ) .'resources/img/user.png' );
 ?>
@@ -14,8 +15,9 @@
 			<div class="ui item sign-out">
 				<a href="<?= base_url() ?>account/sign_out">Cerrar Sesión</a>
 			</div>
-<?
+<?php
 	}
+	/*
 ?>
 			<div class="ui language dropdown item hoverable" id="languages"
 			     data-content="Select Language">
@@ -90,8 +92,10 @@
 					</div>
 				</div>
 			</div>
+	<?php
+	*/
+	?>
 		</div>
 	</div>
 </div>
-<div id="fb-root"></div>
-<div class="main-content">
+<div class="pusher">

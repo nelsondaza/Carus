@@ -17,8 +17,8 @@ $lang['forgot_password_recaptcha_incorrect'] = 'The captcha test is incorrect.';
 
 $lang['reset_password_sent_instructions'] = '';
 $lang['reset_password_resend_the_instructions'] = 'Enviar nuevamente las instrucciones.';
-$lang['reset_password_email_sender'] = 'ID Analytics';
-$lang['reset_password_email_subject'] = 'ID Analytics - Cambio de contraseña';
+$lang['reset_password_email_sender'] = 'Carus';
+$lang['reset_password_email_subject'] = 'Carus - Cambio de contraseña';
 $lang['reset_password_email'] = "Hi %s<BR><BR>Hemos recibido una petición para cambiar tu contraseña.<BR><BR>
 +Para cambiar tu contraseña, por favor haz clic en el link que aparece a continuación o copia y pega la URL en tu navegador:<BR>%s";
 

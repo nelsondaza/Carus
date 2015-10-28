@@ -5,9 +5,9 @@
 | General
 |--------------------------------------------------------------------------
 */
-$lang['website_title'] = 'Reebok Academy';
+$lang['website_title'] = 'Carus';
 $lang['website_welcome_username'] = 'Bienvenido, %s.';
-$lang['website_home'] = 'Reebok Academy';
+$lang['website_home'] = 'Carus';
 $lang['website_account'] = 'Mi Cuenta';
 $lang['website_profile'] = 'Perfil';
 $lang['website_linked'] = 'Cuentas Relacionadas';

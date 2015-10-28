@@ -5,7 +5,7 @@
 | General
 |--------------------------------------------------------------------------
 */
-$lang['website_title'] = 'ID Analytics';
+$lang['website_title'] = 'Carus';
 $lang['website_welcome_username'] = 'Welcome, %s.';
 $lang['website_home'] = 'Dashboard';
 $lang['website_account'] = 'Account Settings';

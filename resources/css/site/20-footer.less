@@ -2,22 +2,37 @@ footer {
 	position: absolute;
 	bottom: 0;
 
-	z-index: 2;
+	z-index: 90;
 
 	.transition(.3s,ease-out 1.7s,bottom);
 
 	width: 100%;
+	height: 33px;
+	padding: 3px 10px;
 
+	background-color: rgba(0,0,0,0.4) !important;
+	color: rgba(255,255,255,1) !important;
+	font-weight: bold;
 
-	.about-carus-btn {
-		background: #56bc8a;
-		color: #FFF;
-		cursor: pointer;
-		height: 45px;
-		font-weight: 700;
-		line-height: 45px;
-		text-align: center;
-		width: 100%;
+	.right {
+		float: right;
+		position: relative;
+		vertical-align: top;
+
+		.ui.basic.button,
+		.ui.basic.button,
+		.ui.basic.buttons .button,
+		.ui.basic.buttons .button {
+			background-color: rgba(0, 0, 0, 0.02) !important;
+			color: rgba(255, 255, 255, 1) !important;
+			font-weight: bold;
+
+			&.active,
+			&:focus,
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.75) !important;
+				color: rgba(0, 0, 0, 0.75) !important;
+			}
+		}
 	}
-
 }

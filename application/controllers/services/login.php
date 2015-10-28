@@ -201,7 +201,7 @@
 				), $html );
 
 				$this->email->to( $email );// change it to yours
-				$this->email->from('no-reply@reebokcardioultra.com', 'Reebok Cardio Ultra');
+				$this->email->from('no-reply@nelsondaza.com', 'Carus');
 				$this->email->subject( 'Petición de cambio de contraseña ' );
 				$this->email->message( $html );
 				$this->email->send();

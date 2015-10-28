@@ -41,7 +41,7 @@
 
 			$props['doc'] = array_merge(
 				array(
-					'title' => 'REEBOK ACADEMY',
+					'title' => 'Carus',
 					'subject' => 'Reporte',
 					'description' => 'Reporte de sistema',
 					'keywords' => 'Reporte',
@@ -89,7 +89,7 @@
 			$objDrawing = new PHPExcel_Worksheet_Drawing();
 			$objDrawing->setWorksheet($sheet);
 			$objDrawing->setName("logo");
-			$objDrawing->setDescription("Reebok - ZPump");
+			$objDrawing->setDescription("Carus");
 			$objDrawing->setPath($logoPath);
 			$objDrawing->setCoordinates('A1');
 			$objDrawing->setWidth(148);
