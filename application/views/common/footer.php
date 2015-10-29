@@ -1,9 +1,9 @@
 <footer>
 	<div class="right">
 		<div class="ui basic mini buttons">
-			<button class="ui button">¿Qué es Carus?</button>
-			<button class="ui button">Términos</button>
-			<button class="ui button">Privacidad</button>
+			<button class="ui button">¿Carus?</button>
+			<button class="ui button">T<span class="mobile">yC.</span><span class="desktop">érminos</span></button>
+			<button class="ui button">Priv<span class="mobile">.</span><span class="desktop">acidad</span></button>
 		</div>
 	</div>
 </footer>

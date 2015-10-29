@@ -34,12 +34,8 @@
 			// Enable SSL?
 			maintain_ssl($this->config->item("ssl_enabled"));
 
-			// Redirect signed in users to homepage
-			if ($this->authentication->is_signed_in())
-				redirect('');
-
 			// Get user by username / email
-			if ( ! $user = $this->account_model->get_by_username_email( $this->input->get( 'email', true ) ) ) {
+			if ( !($user = $this->account_model->get_by_username_email( $this->input->post( 'email', true ) ) ) ) {
 				// Username / email doesn't exist
 				$this->data['error'] = array(
 					'code' => 10,
@@ -49,7 +45,7 @@
 			}
 			else {
 				// Check password
-				if ( !$this->authentication->check_password( $user->password, $this->input->get( 'passwd', true ) ) ) {
+				if ( !$this->authentication->check_password( $user->password, $this->input->post( 'password', true ) ) ) {
 					// Increment sign in failed attempts
 					//$this->session->set_userdata( 'sign_in_failed_attempts', (int) $this->session->userdata( 'sign_in_failed_attempts' ) + 1 );
 					$this->data['error'] = array(

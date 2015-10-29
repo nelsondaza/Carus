@@ -6,7 +6,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title><?= ( isset($title) ? $title . ' - ' : '' ) . lang('website_title') ?></title>
 	<meta name="description" content="Recuerda tus compras, cuanto y donde lo has pagado." />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />-->
 
     <link rel="apple-touch-icon" href="<?= base_url() ?>apple-touch-icon.png">
@@ -26,5 +27,6 @@
 	<link rel="stylesheet" href="<?= base_url() ?>resources/css/site.css">
 
     <script src="<?= base_url() ?>resources/js/vendor/modernizr-2.8.3.min.js"></script>
+	<script type="text/javascript"> var base_url = '<?= base_url() ?>';</script>
 </head>
-<body class="<?= $class ?>">
+<body class="<?= $class . ( $this->authentication->is_signed_in( ) ? ' in' : '' ) ?>">

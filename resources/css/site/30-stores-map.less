@@ -1,0 +1,169 @@
+.map.stores {
+	height: 100%;
+	position: relative;
+
+	.gm-style {
+		div div div div div div:empty {
+			//background-color: #000;
+		}
+	}
+
+	#stores-map-canvas {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+
+		.map-info-window{
+			position: absolute;
+			margin-left: 40px;
+			margin-top: 15px;
+
+			.map-info-close{
+				position: absolute;
+				right: 5px;
+				top: 5px;
+				cursor:pointer;
+				height: 20px;
+				width: 20px;
+				background: transparent url("/images/map-close.png") no-repeat center center;
+			}
+			.map-info-arrow {
+				background: transparent url("/images/map-arrow.png") no-repeat center center;
+				height: 14px;
+				margin-top: -2px;
+			}
+
+			.content-marker {
+				background: transparent url("/images/trainer-back.png") repeat left top;
+				border-radius:4px;
+				box-shadow:5px 8px 16px #222;
+				color:#fff;
+				max-width:300px;
+				max-height:400px;
+				padding: 15px 20px 15px 40px;
+				overflow:hidden;
+				text-transform:uppercase;
+				text-align: left;
+
+				.content-title {
+					background: transparent url("/images/map-pin.png") no-repeat left 8px ;
+					font-family: @font-primary-cond;
+					font-size: 16px;
+					font-weight: normal;
+
+					margin:  0 15px 0 -15px;
+					padding: 5px 0 0 15px;
+				}
+				.content-body {
+					.left {
+						font-family: @font-primary-cond;
+						font-size: 16px;
+						color: #7d7d7d;
+						p {
+							margin: 0;
+						}
+						a:hover,
+						a:visited,
+						a {
+							color: #7aa0bf;
+						}
+						@media only screen and (max-width : @responsive-w-800) {
+							width: 100%;
+						}
+					}
+				}
+				.contact {
+					text-align: center;
+					padding: 5px;
+					a {
+						display: inline-block;
+						font-family: @font-primary-cond;
+						font-size: 20px;
+						padding: 5px 15px;
+						border: 2px solid #FFF;
+						text-decoration: none;
+						&:hover {
+							text-decoration: none;
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	#results {
+		position: absolute;
+		left: 10%;
+		top: 0;
+		padding: 0;
+		z-index: 5;
+
+		.left {
+			float: left;
+			width: 280px;
+			font-family: @font-primary-cond;
+			color: #fff;
+			font-size: 20px;
+			background: transparent url("/images/trainer-back.png") repeat left top;
+
+			.title {
+				background: #98212b url("/images/map-map.png") no-repeat 18px center;
+				height: 40px;
+				cursor: pointer;
+				h2 {
+					height: 40px;
+					line-height: 40px;
+					margin: 0;
+					padding: 0 0 0 70px;
+					color: #FFF;
+					font-family: @font-primary-cond;
+					font-size: 24px;
+					font-weight: normal;
+				}
+			}
+			.text {
+				margin: 30px 35px;
+				.cities {
+					select {
+						border: none;
+						width: 100%;
+
+						padding: 14px 5px 13px 44px;
+
+						background: #FFF url("/images/map-city-target.png") no-repeat left center;
+						color: #5c5c5c;
+					}
+				}
+				@media only screen and (max-width : @responsive-w-800) {
+					margin: 15px 20px;
+				}
+			}
+			@media only screen and (max-width : @responsive-w-800) {
+				width: 220px;
+			}
+		}
+
+	}
+
+	.pump-zone {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 30%;
+		height: 610px;
+		.the-pump {
+		}
+		@media only screen and (max-width : @responsive-w-1024) {
+			width: 20%;
+		}
+		@media only screen and (max-width : @responsive-w-800) {
+			width: 25%;
+		}
+		@media only screen and (max-width : @responsive-w-600) {
+			display: none;
+		}
+	}
+
+
+}
