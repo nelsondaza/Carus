@@ -457,6 +457,20 @@
 		google.maps.event.addDomListener(window, 'load', initMap);
 
 	})();
+
+	// menu
+	(function(){
+		$('#mainMenu .button:first')
+			.popup({
+				popup : $('#mainMenu .popup:first'),
+				on    : 'click',
+				delay: {
+					show: 300,
+					hide: 800
+				}
+			})
+		;
+	})();
 });
 
 /*
