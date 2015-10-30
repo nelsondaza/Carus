@@ -55,6 +55,10 @@
 	class General_model extends CI_Model {
 		protected $tableName = null;
 
+		public function __construct() {
+			if( !$this->tableName )
+				$this->tableName = ''. strtolower( str_replace( '_model', '', get_class( $this ) ) );
+		}
 		/**
 		 * This function is for internal use only
 		 *
@@ -193,6 +197,10 @@
 				return $this->db->count_all_results( $this->tableName );
 			}
 
+			if ( stripos( $action, 'insert_batch' ) === 0 ) {
+				$this->db->insert_batch( $this->tableName, array_pop( $arguments ) );
+				return $this->db->affected_rows( );
+			}
 			if ( stripos( $action, 'insert' ) === 0 ) {
 				$this->db->insert( $this->tableName, array_pop( $arguments ) );
 				return $this->db->insert_id( );
@@ -263,4 +271,13 @@
 		public function onBeforeGet( $arguments ) {
 
 		}
+
+		/**
+		 * Returns actual table name
+		 * @return string
+		 */
+		public function getTableName() {
+			return $this->tableName;
+		}
+
 	}

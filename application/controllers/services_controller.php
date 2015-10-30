@@ -25,7 +25,8 @@
 			$this->data = array(
 				'error' => null,
 			    'data' => null,
-				'paging' => null
+			    'paging' => null,
+				'action' => null
 			);
 			$this->load->language( array( 'services' ) );
 		}
@@ -69,30 +70,33 @@
 				}
 				else {
 					if( !isset( $this->data['data'] ) )
-						$this->data['data']   = null;
+						$this->data['data'] = null;
 				}
 			}
 			else {
 				$this->data = array(
 					'error' => null,
 					'data' => null,
-					'paging' => null
+					'paging' => null,
+					'action' => null
 				);
 			}
 
 			if( !isset( $this->data['paging'] ) )
 				$this->data['paging'] = null;
+			if( isset( $this->data['data']['action'] ) && is_string( $this->data['data']['action'] ) )
+				$this->data['action'] = $this->data['data']['action'];
 
 			if ( $this->input->get( 'callback', true ) ) {
 
 				$this->output->set_content_type('text/javascript; charset=utf8');
 				$this->output->set_header('Access-Control-Max-Age: 3628800', true);
 				$this->output->set_header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE', true);
-				$this->output->set_output($this->input->get( 'callback', true ) . '(' . json_encode( $this->data ) . ');');
+				$this->output->set_output($this->input->get( 'callback', true ) . '(' . json_encode( $this->data, JSON_UNESCAPED_UNICODE ) . ');');
 			} else {
 				// normal JSON string
 				$this->output->set_content_type('application/json; charset=utf8');
-				$this->output->set_output(json_encode( $this->data ));
+				$this->output->set_output(json_encode( $this->data, JSON_UNESCAPED_UNICODE ));
 			}
 
 		}
@@ -142,4 +146,3 @@
 			return null;
 		}
 	}
-

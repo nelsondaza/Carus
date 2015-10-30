@@ -299,11 +299,9 @@
 			var markerSelected = null;
 			//var infowindow = new google.maps.InfoWindow();
 			var infowindow = new CustomWindow();
+			var manMarkerTimeout = null;
 
 			var map = new google.maps.Map(document.getElementById('stores-map-canvas'), mapOptions);
-			google.maps.event.addListener(map, "dragend", function() {
-				console.debug(map.getCenter().toUrlValue());
-			});
 
 			var manMarker = new google.maps.Marker({
 				map: map,
@@ -313,7 +311,7 @@
 
 			google.maps.event.addListener(manMarker, 'click', (function(marker) {
 				return function() {
-					console.debug( markerSelected );
+					clearTimeout(manMarkerTimeout);
 					infowindow.setContent('' +
 						'<div class="map-info-close"><i class="icon inverted remove"></i></div>' +
 							'<div class="content-marker">' +
@@ -321,8 +319,8 @@
 								'<div class="content-body">' +
 									'<div class="left">' +
 										'<div class="ui mini action input">' +
-											'<input type="text" value="" placeholder="Nombre">' +
-											'<button class="ui teal mini right labeled icon button">' +
+											'<input type="text" value="" placeholder="Nombre" id="new_store_name">' +
+											'<button class="ui teal mini right labeled icon button" id="new_store_add">' +
 												'<i class="checkmark icon"></i>' +
 												'Crear' +
 											'</button>' +
@@ -335,11 +333,53 @@
 					);
 					infowindow.open(map, marker);
 					google.maps.event.addListener(map, "dragstart", function(){ infowindow.close() } );
-
 					map.setCenter(marker.getPosition());
 				};
 			})(manMarker));
 
+
+			$( "#stores-map-canvas" ).on( "click", "#new_store_add", function() {
+
+				var $name = $('#new_store_name');
+				if( !$name.val() ) {
+					$('.map-info-window .action.input').addClass('error');
+					$name.focus();
+				}
+				else {
+					$('.map-info-window .action.input').removeClass('error');
+				}
+
+				$.ajax({
+						type: "POST",
+						url: base_url + 'services/store/add',
+						data: {
+							name: $name.val( ),
+							latitude: manMarker.getPosition().lat(),
+							longitude: manMarker.getPosition().lng()
+						},
+						dataType: 'json'
+					})
+					.done(function(data){
+						if(!data.error) {
+							document.location.href = base_url + 'store/' + data.data.id;
+						}
+						else {
+							alert(data.error.msg);
+						}
+					})
+					.fail(function( jqXHR, textStatus ) {
+						}
+					);
+			});
+
+			google.maps.event.addListener(map, "dragend", function() {
+				manMarkerTimeout = setTimeout(function(){
+					google.maps.event.trigger( manMarker, 'click' );
+				}, 3000 );
+			});
+			google.maps.event.addListener(map, "dragstart", function(){
+				clearTimeout(manMarkerTimeout);
+			});
 
 			/*
 			(new google.maps.Marker({
@@ -362,89 +402,55 @@
 			});
 
 
-			console.debug(places);
 			for( var index in places ) {
 				var place = places[index];
-				byLocation[place.town] = byLocation[place.town] || [];
-				byLocation[place.town].push( place );
-
 				var marker = new google.maps.Marker({
 					position: place.latlog,
 					map: map,
-					icon: '/images/map-icon.png',
+					icon: base_url + 'resources/img/marker_store.png',
 					title: place.title,
 				});
 
-
 				place.marker = marker;
 				google.maps.event.addListener(marker, 'click', (function(marker,point) {
-
 					return function() {
-						hideEvents( );
+						clearTimeout(manMarkerTimeout);
 						infowindow.setContent('' +
-								'<div class="map-info-close"></div>' +
-								'<div class="content-marker">' +
-								'<h3 class="content-title">' +
-								( point.places ? point.places : point.title ) +
-								'</h3>' +
-								'<div class="content-body">' +
-								'<div class="left">' +
-								'<p>' +
-								'Entrenador Reebok: ' + point.title +
-								'<br>' +
-								'Especialidad: ' + point.specialty +
-								'<br>' +
-								'E-mail: ' + point.email +
-								'</p>' +
-								'</div>' +
-								'<div class="contact" ><a href="mailto:' + point.email + '">CONTÁCTALO</a></div>' +
-								'</div>' +
+								'<div class="map-info-close"><i class="icon inverted remove"></i></div>' +
+									'<div class="content-marker">' +
+										'<h3 class="content-title">' + point.title + '</h3><br>' +
+										'<button class="ui teal mini button" id="store_select" value="' + point.store  + '"><i class="sign in icon"></i> Seleccionar</button>' +
+									'</div>' +
 								'</div>' +
 								'<div class="map-info-arrow"></div>'
 						);
 						infowindow.open(map, marker);
 						markerSelected = marker;
 						map.setCenter(marker.getPosition());
+						google.maps.event.addListener(map, "dragstart", function(){ infowindow.close() } );
 					};
 				})(marker, place));
 			}
 
+			$( "#stores-map-canvas" ).on( "click", "#store_select", function() {
+				document.location.href = base_url + 'store/' + $('#store_select').val();
+			});
+
 		}
 
 		function initMap( ) {
-			initialize( );
-			return;
 
-			$.getJSON('/services/trainer/map',{},function(data){
+			$.getJSON('/services/store/map',{},function(data){
 				places = [];
 				$.each( data.data, function(index,item){
 					try {
-						//var dateString = item.date_string;
-						//var reggie = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
-						//var dateArray = reggie.exec(dateString);
-
-						var latlog = ( item.locations ? item.locations.split(',') : [] );
-						if( latlog.length == 2 ) {
-							places.push(
-									{
-										//category: categoriesMap[item.category],
-										title: item.name,
-										//subtitle: item.subtitle,
-										places: item.places,
-										email: item.email,
-										town: item.city,
-										specialty: item.specialty,
-										//address: item.address,
-										//cost: item.cost,
-										/*date: months[(+dateArray[2])-1] + ' ' + (+dateArray[3]) + ' de ' + (+dateArray[1]),
-										 times: ( ( (+dateArray[4]) + (+dateArray[5]) ) > 0
-										 ? ( (+dateArray[4]) % 12 ) + ':' + ( (+dateArray[5]) <= 9 ? '0' : '' ) + (+dateArray[5]) + ( (+dateArray[4]) >= 12 ? ' p.m.' : ' a.m.' )
-										 : ''
-										 ),*/
-										latlog: new google.maps.LatLng(latlog[0],latlog[1])
-									}
-							);
-						}
+						places.push(
+							{
+								store: item.id,
+								title: item.name,
+								latlog: new google.maps.LatLng(item.latitude,item.longitude)
+							}
+						);
 					}
 					catch( e ) {
 						;
@@ -453,34 +459,6 @@
 				initialize( );
 			});
 		}
-
-		var hiddenEvents = false;
-
-		function toggleEvents( ) {
-			if( hiddenEvents )
-				showEvents();
-			else
-				hideEvents();
-		}
-
-		function showEvents( ) {
-			hiddenEvents = false;
-			var $results = $('#results');
-			var $left = $results.find('.left .text:first');
-
-			$left.stop().slideDown();
-//	$places.stop().slideDown();
-		}
-
-		function hideEvents( ) {
-			hiddenEvents = true;
-			var $results = $('#results');
-			var $left = $results.find('.left .text:first');
-
-			$left.stop().slideUp();
-//	$places.stop().slideUp();
-		}
-
 
 		google.maps.event.addDomListener(window, 'load', initMap);
 
