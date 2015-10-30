@@ -342,6 +342,7 @@
 			})(manMarker));
 
 
+			console.debug($( "#stores-map-canvas").find('input'));
 			$( "#stores-map-canvas" ).on( "click", "#new_store_add", function() {
 
 				var $name = $('#new_store_name');
@@ -482,6 +483,106 @@
 				}
 			})
 		;
+	})();
+
+	// producto
+	(function(){
+		$('#product_search').search({
+			apiSettings: {
+				url: base_url + 'services/product/search?q={query}'
+			},
+			fields: {
+				results : 'data',
+				title   : 'name'
+			},
+			minCharacters : 3,
+			onSelect: function(result , response) {
+				console.debug( result, response );
+			},
+			error : {
+				source      : 'No se puede realizar la búsqueda.',
+				noResults   : 'No se encontraron coincidencias. <button class="ui green mini button"> NUEVO</button>',
+				logging     : 'Error el log de errores, saliendo.',
+				noTemplate  : 'No se especificó un nombre de plantilla válido.',
+				serverError : 'Hay un problema al realizar la petición.',
+				maxResults  : 'El resultado debe ser un arreglo.',
+				method      : 'El método llamado no está definido.'
+			},
+			templates2 : {
+				escape: function(string) {
+					// returns escaped string for injected results
+				},
+				message: function(message, type) {
+					// returns html for message with given message and type
+				},
+				category: function(response) {
+					// returns results html for category results
+				},
+				standard: function(response) {
+					// returns results html for standard results
+				}
+			}
+		});
+		$('#product_search').on('click','.description .green.button',function(event){
+
+		});
+
+		$('#product-form').form({
+			fields: {
+				name: {
+					identifier: 'name',
+					rules: [
+						{
+							type: 'minLength[3]',
+							prompt: 'Ingresa un nombre válido.'
+						}
+					]
+				},
+				price: {
+					identifier: 'price',
+					rules: [
+						{
+							type: 'number',
+							prompt: 'El precio es incorrecto'
+						},
+						{
+							type: 'empty',
+							prompt: 'El precio es incorrecto'
+						}
+					]
+				}
+			},
+			onSuccess: function () {
+
+				$form  = $(this);
+				$form.addClass('loading');
+
+				$.ajax({
+							type: "POST",
+							url: base_url + 'services/product/add',
+							data: $form.serialize(),
+							dataType: 'json'
+						})
+						.done(function(data){
+							if(!data.error) {
+								alert('select Product');
+							}
+							else{
+								$form.removeClass('loading');
+								$form.form('add errors', [data.error.msg]);
+								$form.find('.ui.error.message').show();
+							}
+						})
+						.fail(function( jqXHR, textStatus ) {
+									$form.removeClass('loading');
+									$form.form('add errors',['Error']);
+									$form.find('.ui.error.message').show();
+								}
+						);
+				return false;
+			}
+		});
+
 	})();
 });
 

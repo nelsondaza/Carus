@@ -1,6 +1,6 @@
 .product_search {
 	z-index: 90;
-	top: 72px;
+	top: 47px;
 	position: fixed;
 	width: 100%;
 	background-color: rgba(0,0,0,0.4);
@@ -22,13 +22,38 @@
 		min-width: inherit;
 		height: 35px;
 		vertical-align: top;
-		text-align: center;
+		text-align: left;
 
+		.search {
+			.label {
+				margin-top: 5px;
+				float: right;
+			}
+			.message.empty {
+				.header {
+					display: none;
+				}
+			}
+		}
 	}
 }
 
-body.in {
-	header {
-		background-color: rgba(0,0,0,0.4);
-	}
+.product_content {
+	z-index: 90;
+	top: 81px;
+	position: fixed;
+	width: 100%;
+	background-color: rgba(0,0,0,0.4);
+	color: #FFF;
+	padding: 10px 0;
+
+
+		form.ui.form {
+			.field {
+				margin: 1px 0;
+			}
+			.button {
+				margin-top: 5px;
+			}
+		}
 }
