@@ -265,15 +265,7 @@
 // Meses
 		var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-		function initialize( ) {
-
-			var $placesList = $('#places');
-			var $resultsList = $('#results .list');
-			var byLocation = {};
-			var byCategory = {};
-
-			var map = new google.maps.Map(document.getElementById('stores-map-canvas'), mapOptions);
-
+		function gotoCurrentLocation( map ) {
 			// Try W3C Geolocation (Preferred)
 			var browserSupportFlag = true;
 			if(navigator.geolocation) {
@@ -298,12 +290,79 @@
 				}
 				map.setCenter(initialLocation);
 			}
+		}
 
+		function initialize( ) {
 
+			var $placesList = $('#places');
+			var $resultsList = $('#results .list');
+			var markerSelected = null;
 			//var infowindow = new google.maps.InfoWindow();
 			var infowindow = new CustomWindow();
 
+			var map = new google.maps.Map(document.getElementById('stores-map-canvas'), mapOptions);
+			google.maps.event.addListener(map, "dragend", function() {
+				console.debug(map.getCenter().toUrlValue());
+			});
 
+			var manMarker = new google.maps.Marker({
+				map: map,
+				icon: base_url + 'resources/img/marker_man.png'
+			});
+			manMarker.bindTo('position', map, 'center');
+
+			google.maps.event.addListener(manMarker, 'click', (function(marker) {
+				return function() {
+					console.debug( markerSelected );
+					infowindow.setContent('' +
+						'<div class="map-info-close"><i class="icon inverted remove"></i></div>' +
+							'<div class="content-marker">' +
+								'<h3 class="content-title">Nuevo Establecimiento</h3>' +
+								'<div class="content-body">' +
+									'<div class="left">' +
+										'<div class="ui mini action input">' +
+											'<input type="text" value="" placeholder="Nombre">' +
+											'<button class="ui teal mini right labeled icon button">' +
+												'<i class="checkmark icon"></i>' +
+												'Crear' +
+											'</button>' +
+										'</div>' +
+									'</div>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+						'<div class="map-info-arrow"></div>'
+					);
+					infowindow.open(map, marker);
+					google.maps.event.addListener(map, "dragstart", function(){ infowindow.close() } );
+
+					map.setCenter(marker.getPosition());
+				};
+			})(manMarker));
+
+
+			/*
+			(new google.maps.Marker({
+				map: map,
+				icon: base_url + 'resources/img/marker_store.png'
+			})).bindTo('position', map, 'center');
+
+
+			(new google.maps.Marker({
+				map: map,
+				icon: base_url + 'resources/img/marker_pin2.png'
+			})).bindTo('position', map, 'center');
+			*/
+
+
+			gotoCurrentLocation( map );
+			$('#current_location').click(function(event){
+				event.preventDefault();
+				gotoCurrentLocation( map );
+			});
+
+
+			console.debug(places);
 			for( var index in places ) {
 				var place = places[index];
 				byLocation[place.town] = byLocation[place.town] || [];
@@ -344,43 +403,12 @@
 								'<div class="map-info-arrow"></div>'
 						);
 						infowindow.open(map, marker);
+						markerSelected = marker;
 						map.setCenter(marker.getPosition());
 					};
 				})(marker, place));
 			}
 
-			for( var city in byLocation ) {
-				//var key = city.toLowerCase().replace(/([^a-z]+)/gi, '');
-				$('#cities-filter').append($("<option></option>").attr("value",city).text(city));
-			}
-			$('#cities-filter').change(function(){
-				var key = $(this).val();
-				if( key ) {
-					var rand = byLocation[key][Math.floor(Math.random() * byLocation[key].length)];
-					map.setCenter(rand.marker.getPosition());
-					hideEvents( );
-				}
-			});
-
-			$('#results .title:first').click(function(){
-				toggleEvents();
-			});
-
-			$('.pump.locate').click(function(event){
-				event.preventDefault();
-
-				if (navigator.geolocation) {
-					// Get current position
-					navigator.geolocation.getCurrentPosition(function (position) {
-								// Success!
-								var latLong = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-								map.setCenter(latLong);
-							},
-							function () {
-								// Gelocation fallback: Defaults to Stockholm, Sweden
-							});
-				}
-			});
 		}
 
 		function initMap( ) {
@@ -464,6 +492,7 @@
 			.popup({
 				popup : $('#mainMenu .popup:first'),
 				on    : 'click',
+				offset : 5,
 				delay: {
 					show: 300,
 					hide: 800

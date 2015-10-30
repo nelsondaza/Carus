@@ -15,8 +15,8 @@
 
 		.map-info-window{
 			position: absolute;
-			margin-left: 40px;
-			margin-top: 15px;
+			margin-left: 43px;
+			margin-top: 60px;
 
 			.map-info-close{
 				position: absolute;
@@ -25,39 +25,37 @@
 				cursor:pointer;
 				height: 20px;
 				width: 20px;
-				background: transparent url("/images/map-close.png") no-repeat center center;
 			}
 			.map-info-arrow {
-				background: transparent url("/images/map-arrow.png") no-repeat center center;
-				height: 14px;
+				background: transparent url("../img/map-arrow.png") no-repeat center center;
+				height: 17px;
 				margin-top: -2px;
 			}
 
 			.content-marker {
-				background: transparent url("/images/trainer-back.png") repeat left top;
+				background: transparent url("../img/map-window-back.png") repeat left top;
 				border-radius:4px;
 				box-shadow:5px 8px 16px #222;
 				color:#fff;
 				max-width:300px;
 				max-height:400px;
-				padding: 15px 20px 15px 40px;
+				padding: 15px 20px 15px 20px;
 				overflow:hidden;
 				text-transform:uppercase;
 				text-align: left;
 
 				.content-title {
-					background: transparent url("/images/map-pin.png") no-repeat left 8px ;
-					font-family: @font-primary-cond;
-					font-size: 16px;
-					font-weight: normal;
+					font-family: @font-primary;
+					font-size: 12px;
+					font-weight: bold;
 
-					margin:  0 15px 0 -15px;
-					padding: 5px 0 0 15px;
+					margin: 0;
+					padding: 0;
 				}
 				.content-body {
 					.left {
-						font-family: @font-primary-cond;
-						font-size: 16px;
+						font-family: @font-primary;
+						font-size: 14px;
 						color: #7d7d7d;
 						p {
 							margin: 0;

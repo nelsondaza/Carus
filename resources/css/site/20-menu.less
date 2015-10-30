@@ -6,5 +6,38 @@
 	z-index: 91;
 	.transition(.3s,ease-out 1.7s,bottom);
 
-
+	#current_location {
+		margin: 10px;
+		display: inline-block;
+		text-decoration: none;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	.buttons {
+		button {
+			background-color: rgba(13,113,187,.5);
+			cursor: pointer;
+		}
+	}
+	.mini.popup {
+		padding: 0 !important;
+		&>.menu>.item {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+		.menu {
+			.menu {
+				margin-top: 10px;
+				min-width: 100px;
+				.item {
+					overflow: hidden;
+					padding: 10px 5px;
+					.icon {
+						float: none;
+					}
+				}
+			}
+		}
+	}
 }

@@ -8,27 +8,18 @@
 	$action = ( isset( $action ) && $action ? $action : null );
 ?>
 <div class="menu" id="mainMenu">
-	<div class="ui mini basic icon buttons">
-		<button class="ui button"><i class="sidebar big inverted icon"></i></button>
+	<a href="#" id="current_location"><i class="circular icon location arrow"></i></a>
+	<br>
+	<div class="ui small blue icon buttons">
+		<button class="ui button"><i class="sidebar icon"></i></button>
 	</div>
-	<div class="ui flowing popup top left transition hidden">
-		<div class="ui vertical menu">
-			<a class="active teal item">
-				Inbox
-				<div class="ui teal pointing left label">1</div>
-			</a>
-			<a class="item">
-				Spam
-				<div class="ui label">51</div>
-			</a>
-			<a class="item">
-				Updates
-				<div class="ui label">1</div>
-			</a>
+	<div class="ui flowing mini popup top left transition hidden">
+		<div class="ui small vertical compact menu">
 			<div class="item">
-				<div class="ui transparent icon input">
-					<input type="text" placeholder="Search mail...">
-					<i class="search icon"></i>
+				<div class="menu">
+					<a class="item"><i class="search icon"></i> Buscar</a>
+					<a class="item"><i class="cart icon"></i> Productos</a>
+					<a class="active item"><i class="building icon"></i> Tienda</a>
 				</div>
 			</div>
 		</div>
