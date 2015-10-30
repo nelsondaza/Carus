@@ -245,6 +245,10 @@
 			"featureType": "road.arterial",
 			"elementType": "geometry.stroke",
 			"stylers": [{"visibility": "on"}, {"color": "#454545"}, {"lightness": 53}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels",
+			"stylers": [{"visibility": "off"}]
 		}];
 
 //Locations GPS
@@ -344,6 +348,7 @@
 				if( !$name.val() ) {
 					$('.map-info-window .action.input').addClass('error');
 					$name.focus();
+					return;
 				}
 				else {
 					$('.map-info-window .action.input').removeClass('error');

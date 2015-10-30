@@ -1,11 +1,3 @@
-<?php
-	if( $this->authentication->is_signed_in( ) ) {
-        $this->load->view('common/menu');
-	}
-	else {
-        ;
-	}
-?>
 <footer>
 	<div class="right">
 		<div class="ui basic mini buttons">

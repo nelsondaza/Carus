@@ -58,7 +58,7 @@
 	 *
 	 */
 	class GeneralController extends CI_Controller {
-		protected $scope = null;
+		protected $scope = '';
 		protected $model = null;
 		/**
 		 * Constructor
@@ -91,6 +91,7 @@
 			$this->load->language( array( 'general', 'calendar' ) );
 
 			if( $this->scope !== null ) {
+
 				$scope = ( $this->scope ? $this->scope . '/' : '' ) . strtolower( get_class( $this ) );
 				$scopeUC = ( $this->scope ? $this->scope . '/' : '' ) . get_class( $this );
 
@@ -106,7 +107,7 @@
 					$this->load->library( $scopeUC );
 				if( file_exists( APPPATH . 'models/' . $scope . '_model.php' ) ) {
 					$this->load->model( $scope . '_model' );
-					$model = substr($scope, strrpos($scope, '/') + 1) . '_model';
+					$model = ( strrpos($scope, '/') !== false ? substr($scope, strrpos($scope, '/') + 1 ) : $scope ) . '_model';
 					$this->model = $this->$model;
 				}
 			}
@@ -115,7 +116,7 @@
 		}
 
 		/**
-		 * @param string|null $signin       Controller to redirect after user signin if it needs to
+		 * @param bool|string|null $signin       Controller to redirect after user signin if it needs to
 		 * @param array|null  $restrictions Key => Value Array, where  key is the permission and Value is the Controller
 		 *
 		 * @return array|null Array with account and account_details data or null if auth fails
@@ -131,8 +132,10 @@
 
 			// Redirect unauthenticated users to signin page
 			if ( ! $this->authentication->is_signed_in() ) {
-				redirect( 'account/sign_in/?continue=' . urlencode( base_url() . trim( ( $signin ? $signin : '' ) ) ) );
-
+				if( $signin === true )
+					redirect('');
+				else
+					redirect( 'account/sign_in/?continue=' . urlencode( base_url() . trim( ( $signin ? $signin : '' ) ) ) );
 				return null;
 			}
 

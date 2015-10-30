@@ -90,78 +90,17 @@
 		}
 	}
 
-	#results {
+	#current_location {
+		margin: 10px;
+		display: inline-block;
+		text-decoration: none;
 		position: absolute;
-		left: 10%;
-		top: 0;
-		padding: 0;
-		z-index: 5;
-
-		.left {
-			float: left;
-			width: 280px;
-			font-family: @font-primary-cond;
-			color: #fff;
-			font-size: 20px;
-			background: transparent url("/images/trainer-back.png") repeat left top;
-
-			.title {
-				background: #98212b url("/images/map-map.png") no-repeat 18px center;
-				height: 40px;
-				cursor: pointer;
-				h2 {
-					height: 40px;
-					line-height: 40px;
-					margin: 0;
-					padding: 0 0 0 70px;
-					color: #FFF;
-					font-family: @font-primary-cond;
-					font-size: 24px;
-					font-weight: normal;
-				}
-			}
-			.text {
-				margin: 30px 35px;
-				.cities {
-					select {
-						border: none;
-						width: 100%;
-
-						padding: 14px 5px 13px 44px;
-
-						background: #FFF url("/images/map-city-target.png") no-repeat left center;
-						color: #5c5c5c;
-					}
-				}
-				@media only screen and (max-width : @responsive-w-800) {
-					margin: 15px 20px;
-				}
-			}
-			@media only screen and (max-width : @responsive-w-800) {
-				width: 220px;
-			}
-		}
-
-	}
-
-	.pump-zone {
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 30%;
-		height: 610px;
-		.the-pump {
-		}
-		@media only screen and (max-width : @responsive-w-1024) {
-			width: 20%;
-		}
-		@media only screen and (max-width : @responsive-w-800) {
-			width: 25%;
-		}
-		@media only screen and (max-width : @responsive-w-600) {
-			display: none;
+		bottom: 35px;
+		left: 0;
+		z-index: 90;
+		&:hover {
+			text-decoration: none;
 		}
 	}
-
 
 }

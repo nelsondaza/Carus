@@ -8,8 +8,6 @@
 	$action = ( isset( $action ) && $action ? $action : null );
 ?>
 <div class="menu" id="mainMenu">
-	<a href="#" id="current_location"><i class="circular icon location arrow"></i></a>
-	<br>
 	<div class="ui small blue icon buttons">
 		<button class="ui button"><i class="sidebar icon"></i></button>
 	</div>
@@ -17,9 +15,12 @@
 		<div class="ui small vertical compact menu">
 			<div class="item">
 				<div class="menu">
+					<!--
 					<a class="item"><i class="search icon"></i> Buscar</a>
-					<a class="item"><i class="cart icon"></i> Productos</a>
-					<a class="active item"><i class="building icon"></i> Tienda</a>
+					<a class="item"><i class="cart icon"></i> Mis compras</a>
+					<a href="<?= base_url() ?>" class="<?= $action == 'store' ? 'active' : '' ?> item"><i class="cart icon"></i> Producto</a>
+					-->
+					<a href="<?= base_url() ?>" class="<?= $action == 'store' ? 'active' : '' ?> item"><i class="building icon"></i> Tiendas</a>
 				</div>
 			</div>
 		</div>

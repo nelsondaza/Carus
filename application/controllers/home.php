@@ -246,5 +246,4 @@
 				'trainers' => $trainers
 			) );
 		}
-
 	}

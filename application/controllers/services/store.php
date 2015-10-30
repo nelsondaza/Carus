@@ -43,7 +43,7 @@
 			else {
 				// Create/Update
 				$attributes = array();
-				$attributes['name'] = ( $this->input->post( 'name', true ) ? $this->input->post( 'name', true ) : null );
+				$attributes['name'] = ( $this->input->post( 'name', true ) ? trim( $this->input->post( 'name', true ) ) : null );
 				$attributes['latitude'] = ( $this->input->post( 'latitude', true ) ? $this->input->post( 'latitude', true ) : null );
 				$attributes['longitude'] = ( $this->input->post( 'longitude', true ) ? $this->input->post( 'longitude', true ) : null );
 				$attributes['id_account'] = $this->session->userdata( 'account_id' );;
