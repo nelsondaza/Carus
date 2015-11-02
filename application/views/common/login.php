@@ -29,6 +29,19 @@
 					</div>
 				</div>
 				<input type="submit" class="ui fluid large teal submit button" value="Ingresar" />
+				<div class="ui right aligned basic segment">
+					<a href="#" class="right floated text password-reset"><i class="icon unlock"></i>Olvidé mi contraseña</a>
+				</div>
+				<div class="ui error message"></div>
+			</form>
+			<form id="password-form" class="ui small form hidden" autocomplete="off" action="" method="post">
+				<div class="field">
+					<div class="ui left icon input">
+						<i class="at icon"></i>
+						<input type="email" name="email" placeholder="E-mail" autocomplete="off">
+					</div>
+				</div>
+				<input type="submit" class="ui fluid large teal submit button" value="Recordar" />
 				<div class="ui error message"></div>
 			</form>
 			<form id="register-form" class="ui small form hidden" autocomplete="off" action="" method="post">
@@ -68,6 +81,9 @@
 					</div>
 				</div>
 				<input type="submit" class="ui fluid large teal submit button" value="Registrarme" />
+				<div class="ui right aligned basic segment">
+					<a href="#" class="right floated text password-reset"><i class="icon unlock"></i>Olvidé mi contraseña</a>
+				</div>
 				<div class="ui error message"></div>
 			</form>
 		</div>

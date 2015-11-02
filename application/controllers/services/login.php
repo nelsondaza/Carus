@@ -165,7 +165,7 @@
 		}
 
 		function forgot( ) {
-			$email = (  $this->input->get( 'email', true ) ? $this->input->get( 'email', true ) : null );
+			$email = (  $this->input->post( 'email', true ) ? $this->input->post( 'email', true ) : null );
 			$account = $this->account_model->get_by_email( $email );
 
 			if( $account )  {
@@ -187,18 +187,18 @@
 
 				$this->data['data']['user']['pass'] = $newPass;
 
-				$html = file_get_contents( FCPATH . 'img/mailing/clave.html' );
-				$html = preg_replace( "/(['\"]?)img\\//", '$1' . base_url() . 'img/mailing/img/', $html );
+				$html = file_get_contents( FCPATH . 'resources/mailing/password.html' );
+				//$html = preg_replace( "/(['\"]?)img\\//", '$1' . base_url() . 'img/mailing/img/', $html );
 				$html = str_replace( array(
-					'__NOMBRE__',
-					'__CLAVE__' ), array(
+					'__NAME__',
+					'__PASSWORD__' ), array(
 					( $account_details->firstname ? $account_details->firstname : $account_details->fullname ),
 					$newPass
 				), $html );
 
 				$this->email->to( $email );// change it to yours
-				$this->email->from('no-reply@nelsondaza.com', 'Carus');
-				$this->email->subject( 'Petición de cambio de contraseña ' );
+				$this->email->from('no-reply@nelsondaza.com', 'Carus System');
+				$this->email->subject( 'Petición de cambio de contraseña' );
 				$this->email->message( $html );
 				$this->email->send();
 

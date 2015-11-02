@@ -10,18 +10,23 @@
 			$(this).addClass('active').siblings('button').removeClass('active');
 			$('#register-form').removeClass('hidden').show().siblings('form').hide();
 		});
+		$('.password-reset').click(function(event){
+			event.preventDefault();
+			$('#user-login,#user-register').removeClass('active');
+			$('#password-form').removeClass('hidden').show().siblings('form').hide();
+		});
 		$('#user-logout').click(function(){
 			$.ajax({
-						type: "POST",
-						url: base_url + 'services/logout',
-						dataType: 'json'
-					})
-					.done(function(data){
-						document.location.href = base_url;
-					})
-					.fail(function( jqXHR, textStatus ) {
-						document.location.href = base_url;
-					});
+				type: "POST",
+				url: base_url + 'services/logout',
+				dataType: 'json'
+			})
+			.done(function(data){
+				document.location.href = base_url;
+			})
+			.fail(function( jqXHR, textStatus ) {
+				document.location.href = base_url;
+			});
 		});
 	})();
 
@@ -56,6 +61,52 @@
 				$.ajax({
 					type: "POST",
 					url: base_url + 'services/login',
+					data: $form.serialize(),
+					dataType: 'json'
+				})
+				.done(function(data){
+					if(!data.error) {
+						document.location.href = base_url;
+					}
+					else{
+						$form.removeClass('loading');
+						$form.form('add errors', [data.error.msg]);
+						$form.find('.ui.error.message').show();
+					}
+				})
+				.fail(function( jqXHR, textStatus ) {
+						$form.removeClass('loading');
+						$form.form('add errors',['Error']);
+						$form.find('.ui.error.message').show();
+					}
+				);
+				return false;
+			}
+		});
+	})();
+
+	// Reset
+	(function(){
+		$('#password-form').form({
+			fields: {
+				email: {
+					identifier: 'email',
+					rules: [
+						{
+							type: 'email',
+							prompt: 'Ingresa un e-mail válido.'
+						}
+					]
+				}
+			},
+			onSuccess: function () {
+
+				$form  = $(this);
+				$form.addClass('loading');
+
+				$.ajax({
+					type: "POST",
+					url: base_url + 'services/login/forgot',
 					data: $form.serialize(),
 					dataType: 'json'
 				})

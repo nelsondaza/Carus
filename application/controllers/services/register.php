@@ -80,16 +80,15 @@
 
 				$account_details = $this->account_details_model->get_by_account_id( $this->session->userdata( 'account_id' ) );
 
-				/*
-				$html = file_get_contents( FCPATH . 'resources/mailing/registro.html' );
+				$html = file_get_contents( FCPATH . 'resources/mailing/register.html' );
+				$html = str_replace( '__NAME__', htmlentities( $newUser['fullname'] ), $html );
 
 				$this->email->to( $email );// change it to yours
-				$this->email->bcc( 'nelson.daza@gmail.com' );// change it to yours
-				$this->email->from( 'no-reply@nelsondaza.com', 'Carus' );
+				$this->email->from( 'carus@nelsondaza.com', 'Carus System' );
 				$this->email->subject( '¡CARUS TE DA LA BIENVENIDA!' );
 				$this->email->message( $html );
 				$this->email->send();
-				*/
+
 
 				// Create a3m account
 				$this->data['data'] = array(
