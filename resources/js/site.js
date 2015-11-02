@@ -1,10 +1,35 @@
 (jQuery || $)(function(){
 
+	// menu
+	(function(){
+		$('#user-login').click(function(){
+			$(this).addClass('active').siblings('button').removeClass('active');
+			$('#login-form').removeClass('hidden').show().siblings('form').hide();
+		});
+		$('#user-register').click(function(){
+			$(this).addClass('active').siblings('button').removeClass('active');
+			$('#register-form').removeClass('hidden').show().siblings('form').hide();
+		});
+		$('#user-logout').click(function(){
+			$.ajax({
+						type: "POST",
+						url: base_url + 'services/logout',
+						dataType: 'json'
+					})
+					.done(function(data){
+						document.location.href = base_url;
+					})
+					.fail(function( jqXHR, textStatus ) {
+						document.location.href = base_url;
+					});
+		});
+	})();
+
 	// Login
 	(function(){
-		$('#home-form').form({
+		$('#login-form').form({
 			fields: {
-				name: {
+				email: {
 					identifier: 'email',
 					rules: [
 						{
@@ -19,15 +44,6 @@
 						{
 							type: 'minLength[4]',
 							prompt: 'La clave es muy corta.'
-						}
-					]
-				},
-				terms: {
-					identifier: 'terms',
-					rules: [
-						{
-							type: 'checked',
-							prompt: 'Acepta los términos de uso.'
 						}
 					]
 				}
@@ -62,25 +78,91 @@
 				return false;
 			}
 		});
-
 	})();
 
-	// logout
+	// register
 	(function(){
-		$('#user-logout').click(function(){
-			$.ajax({
-				type: "POST",
-				url: base_url + 'services/logout',
-				dataType: 'json'
-			})
-			.done(function(data){
-				document.location.href = base_url;
-			})
-			.fail(function( jqXHR, textStatus ) {
-				document.location.href = base_url;
-			});
+		$('#register-form').form({
+			fields: {
+				name: {
+					identifier: 'name',
+					rules: [
+						{
+							type: 'minLength[4]',
+							prompt: 'Ingresa un nombre válido.'
+						}
+					]
+				},
+				gender: {
+					identifier: 'gender',
+					rules: [
+						{
+							type: 'empty',
+							prompt: 'Debes seleccionar un género.'
+						}
+					]
+				},
+				email: {
+					identifier: 'email',
+					rules: [
+						{
+							type: 'email',
+							prompt: 'Ingresa un e-mail válido.'
+						}
+					]
+				},
+				password: {
+					identifier: 'password',
+					rules: [
+						{
+							type: 'minLength[4]',
+							prompt: 'La clave es muy corta.'
+						}
+					]
+				},
+				terms: {
+					identifier: 'terms',
+					rules: [
+						{
+							type: 'checked',
+							prompt: 'Acepta los términos de uso.'
+						}
+					]
+				}
+			},
+			onSuccess: function () {
+
+				$form  = $(this);
+				$form.addClass('loading');
+
+				$.ajax({
+					type: "POST",
+					url: base_url + 'services/register',
+					data: $form.serialize(),
+					dataType: 'json'
+				})
+				.done(function(data){
+					if(!data.error) {
+						document.location.href = base_url;
+					}
+					else{
+						$form.removeClass('loading');
+						$form.form('add errors', [data.error.msg]);
+						$form.find('.ui.error.message').show();
+					}
+				})
+				.fail(function( jqXHR, textStatus ) {
+						$form.removeClass('loading');
+						$form.form('add errors',['Error']);
+						$form.find('.ui.error.message').show();
+					}
+				);
+				return false;
+			}
 		});
 	})();
+
+
 
 	// stores
 	(function(){
@@ -589,3 +671,46 @@
 /*
 [{"featureType":"landscape","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"simplified"},{"lightness":"0"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"lightness":"0"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"lightness":"0"}]},{"featureType":"administrative","elementType":"labels","stylers":[{"lightness":"0"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"administrative.province","elementType":"labels","stylers":[{"lightness":"40"}]},{"featureType":"administrative.locality","elementType":"labels","stylers":[{"lightness":"25"}]},{"featureType":"administrative.neighborhood","elementType":"labels","stylers":[{"lightness":"40"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape.man_made","elementType":"all","stylers":[{"lightness":"100"}]},{"featureType":"landscape.natural","elementType":"all","stylers":[{"color":"#ffffff"},{"lightness":"0"}]},{"featureType":"landscape.natural.landcover","elementType":"all","stylers":[{"lightness":"0"}]},{"featureType":"landscape.natural.landcover","elementType":"geometry.fill","stylers":[{"lightness":"0"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"visibility":"on"},{"lightness":"27"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":"45"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"lightness":"-5"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"},{"weight":2.92},{"lightness":33}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"lightness":-16}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#afdbed"},{"lightness":35}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#454545"},{"lightness":53}]}]
 	*/
+
+
+/*
+* buscar en todo el nombre la parte de texto
+* ç
+*
+* resultado de comparacion de precios.
+* tiendas más cercanas a unos metros de distancia. (200mts)
+* cercanos a 200mts ... si hay no se muestran más
+* si no, el más cerca a 300mts.
+*
+*
+* en el buscador mostrar resultados en mapa.
+*
+* detalle de producto al buscar.
+* eliminar precio.
+* actualizar precio.
+*
+* Reporte de productos comprados, paginado, de a 5, con fecha precio y tienda.
+*
+*
+* al buscar un productos se de be filtrar así:
+*
+* Precio menor.
+* FEcha de ingreso del precio.
+* distancia a la ubicación actual.
+* limitado a 5.
+*
+*
+*
+* ADMINIOSTRACION
+*
+* cuantas veces se ha logueado un usuario.
+* estadísticas de cambios de precio.
+* actividad de los usuairos.
+*
+*
+* video de 10-15 min
+* mostrando todo el programa.
+* modelo de tablas y técnico para mostrar.
+*
+*
+* */

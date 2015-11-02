@@ -14,8 +14,8 @@
 	}
 	else {
 ?>
-				<button class="ui button active" id="user-login">Ingresa</button>
-				<button class="ui button" id="user-register">Regístrate</button>
+				<button class="ui button active" id="user-login">Entrar</button>
+				<button class="ui button" id="user-register">Regístrarme</button>
 <?php
 	}
 ?>
