@@ -1,4 +1,28 @@
+
 (jQuery || $)(function(){
+
+	/*
+	function hideAddressBar()
+	{
+		if(!window.location.hash)
+		{
+			if(document.height <= window.outerHeight + 10)
+			{
+				alert( document.body.style.height +' ' + (window.outerHeight + 50) +'px');
+				document.body.style.height = (window.outerHeight + 50) +'px';
+
+				setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+			}
+			else
+			{
+				setTimeout( function(){ window.scrollTo(0, 1); }, 0 );
+			}
+		}
+	}
+	hideAddressBar();
+	window.addEventListener("orientationchange", hideAddressBar );
+	*/
+
 
 	// menu
 	(function(){
@@ -28,6 +52,17 @@
 				document.location.href = base_url;
 			});
 		});
+
+		$('#mainMenu .button:first').popup({
+			popup : $('#mainMenu .popup:first'),
+			on    : 'click',
+			offset : 5,
+			delay: {
+				show: 300,
+				hide: 800
+			}
+		});
+
 	})();
 
 	// Login
@@ -222,77 +257,6 @@
 		if( $map.length == 0 )
 			return;
 
-		var CustomWindow = function(){
-			this.container = $('<div class="map-info-window"></div>');
-			this.layer = null;
-			this.marker = null;
-			this.position = null;
-		};
-		/**
-		 * Inherit from OverlayView
-		 * @type {google.maps.OverlayView}
-		 */
-		CustomWindow.prototype = new google.maps.OverlayView();
-		/**
-		 * Called when this overlay is set to a map via this.setMap. Get the appropriate map pane
-		 * to add the window to, append the container, bind to close element.
-		 * @see CustomWindow.open
-		 */
-		CustomWindow.prototype.onAdd = function(){
-			this.layer = $(this.getPanes().floatPane);
-			this.layer.append(this.container);
-			var self = this;
-			this.container.find('.map-info-close').on('click', function(){
-				// Close info window on click
-				self.close();
-			});
-		};
-		/**
-		 * Called after onAdd, and every time the map is moved, zoomed, or anything else that
-		 * would effect positions, to redraw this overlay.
-		 */
-		CustomWindow.prototype.draw = function(){
-			var scaledSize = {width:84,height:78};
-			var markerIcon = this.marker.getIcon(),
-					cHeight = this.container.outerHeight() + scaledSize.height + 10,
-					cWidth = this.container.width() / 2 + scaledSize.width / 2;
-			this.position = this.getProjection().fromLatLngToDivPixel(this.marker.getPosition());
-			this.container.css({
-				'top':this.position.y - cHeight,
-				'left':this.position.x - cWidth
-			});
-		};
-		/**
-		 * Called when this overlay has its map set to null.
-		 * @see CustomWindow.close
-		 */
-		CustomWindow.prototype.onRemove = function(){
-			this.container.remove();
-		};
-		/**
-		 * Sets the contents of this overlay.
-		 * @param {string} html
-		 */
-		CustomWindow.prototype.setContent = function(html){
-			this.container.html(html);
-		};
-		/**
-		 * Sets the map and relevant marker for this overlay.
-		 * @param {google.maps.Map} map
-		 * @param {google.maps.Marker} marker
-		 */
-		CustomWindow.prototype.open = function(map, marker){
-			this.marker = marker;
-			this.setMap(map);
-		};
-		/**
-		 * Close this overlay by setting its map to null.
-		 */
-		CustomWindow.prototype.close = function(){
-			this.setMap(null);
-		};
-
-
 //Style Map
 		var styleMap = [{
 			"featureType": "landscape",
@@ -396,18 +360,21 @@
 			disableDefaultUI: true
 		};
 
-// Lugares
-		var places = [];
 
 // Meses
 		var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 		function gotoCurrentLocation( map ) {
+			var $locationButton = $('#current_location');
+			var popupTimeout = null;
+			showLocationPopup('Ubicando...','yellow');
+
 			// Try W3C Geolocation (Preferred)
 			var browserSupportFlag = true;
 			if(navigator.geolocation) {
 				browserSupportFlag = true;
 				navigator.geolocation.getCurrentPosition(function(position) {
+					showLocationPopup('¡Encontrado!','green');
 					map.setCenter(new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
 				}, function() {
 					handleNoGeolocation(browserSupportFlag);
@@ -421,11 +388,34 @@
 
 			function handleNoGeolocation(errorFlag) {
 				if (errorFlag == true) {
-					alert("Geolocation service failed.");
+					showLocationPopup('El servicio de ubicación no está activo', 'orange');
 				} else {
-					alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+					showLocationPopup('Tu navegador no permite Geolocalización.', 'red');
 				}
 				map.setCenter(initialLocation);
+			}
+
+			function showLocationPopup( msg, style ) {
+
+				clearTimeout( popupTimeout );
+
+				$locationButton.removeClass('yellow red orange green').addClass(style);
+				if( $locationButton.popup('exists') ) {
+					$locationButton.popup('destroy');
+				}
+
+				if( msg ) {
+					$locationButton.popup({
+						on: 'manual',
+						variation: 'mini',
+						addTouchEvents:	true,
+						html: msg
+					});
+					$locationButton.popup('show');
+					popupTimeout = setTimeout(function(){
+						$locationButton.popup('destroy');
+					}, 2000)
+				}
 			}
 		}
 
@@ -434,8 +424,7 @@
 			var $placesList = $('#places');
 			var $resultsList = $('#results .list');
 			var markerSelected = null;
-			//var infowindow = new google.maps.InfoWindow();
-			var infowindow = new CustomWindow();
+			var infowindow = new google.maps.InfoWindow();
 			var manMarkerTimeout = null;
 
 			var map = new google.maps.Map(document.getElementById('stores-map-canvas'), mapOptions);
@@ -474,8 +463,6 @@
 				};
 			})(manMarker));
 
-
-			console.debug($( "#stores-map-canvas").find('input'));
 			$( "#stores-map-canvas" ).on( "click", "#new_store_add", function() {
 
 				var $name = $('#new_store_name');
@@ -601,21 +588,6 @@
 
 		google.maps.event.addDomListener(window, 'load', initMap);
 
-	})();
-
-	// menu
-	(function(){
-		$('#mainMenu .button:first')
-			.popup({
-				popup : $('#mainMenu .popup:first'),
-				on    : 'click',
-				offset : 5,
-				delay: {
-					show: 300,
-					hide: 800
-				}
-			})
-		;
 	})();
 
 	// producto

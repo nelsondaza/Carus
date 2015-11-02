@@ -3,7 +3,7 @@
 	$this->load->view('common/head');
 	$this->load->view('common/header');
 ?>
-	<section class="body-content" style="background-image: url('<?= base_url( )?>resources/img/backs/<?= rand(1,6) ?>.jpg')">
+	<section class="body-content" style="background-image: url('<?= base_url( )?>resources/img/backs/<?= rand(1,11) ?>.jpg')">
 		<div class="product_search">
 			<div class="nav">
 				<div class="ui mini left aligned category search" id="product_search">

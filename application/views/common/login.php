@@ -10,7 +10,7 @@
 	       'access_type=offline';
 */
 ?>
-<section class="body-content" style="background-image: url('<?= base_url( )?>resources/img/backs/<?= rand(1,6) ?>.jpg')">
+<section class="body-content" style="background-image: url('<?= base_url( )?>resources/img/backs/<?= rand(1,11) ?>.jpg')">
 
 	<div class="ui middle aligned centered aligned grid">
 		<div class="ten wide column mobile eight wide tablet six wide computer column">

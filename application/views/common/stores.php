@@ -5,6 +5,8 @@
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 	<div class="map stores">
 		<div id="stores-map-canvas"></div>
-		<a href="#" id="current_location"><i class="circular icon location arrow"></i></a>
+		<button id="current_location" class="ui circular basic yellow icon button">
+			<i class="location arrow icon"></i>
+		</button>
 	</div>
 </section>
