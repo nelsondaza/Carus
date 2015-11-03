@@ -52,3 +52,33 @@ img {
 	background: #999 no-repeat center center;
 	.background-size(cover)
 }
+
+.nav {
+	.user-select();
+	box-sizing: border-box;
+	position: relative;
+	width: 100% !important;
+	left: 0;
+	top: 0;
+	margin: auto;
+	padding: 3px 0 0 5px;
+	min-width: inherit;
+	height: 26px;
+	vertical-align: top;
+
+	.ui.basic.button,
+	.ui.basic.button,
+	.ui.basic.buttons .button,
+	.ui.basic.buttons .button {
+		background-color: rgba(0,0,0,0.02) !important;
+		color: rgba(255,255,255,1) !important;
+		font-weight: bold;
+
+		&.active,
+		&:focus,
+		&:hover {
+			background-color: rgba(255,255,255,0.75) !important;
+			color: rgba(0,0,0,0.75) !important;
+		}
+	}
+}

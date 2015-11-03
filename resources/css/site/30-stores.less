@@ -2,12 +2,6 @@
 	height: 100%;
 	position: relative;
 
-	.gm-style {
-		div div div div div div:empty {
-			//background-color: #000;
-		}
-	}
-
 	#stores-map-canvas {
 		height: 100%;
 		margin: 0;
@@ -87,6 +81,36 @@
 				}
 			}
 
+		}
+	}
+
+	#stores-menu {
+		z-index: 90;
+		top: 47px;
+		position: fixed;
+		width: 100%;
+		background-color: rgba(0,0,0,0.3);
+		color: #FFF;
+		text-align: center;
+		.close {
+			float: right;
+			cursor: pointer;
+			margin: 6px;
+		}
+		.nav {
+			display: none;
+			height: 36px;
+			overflow: hidden;
+			margin: 0;
+			padding: 0;
+			.labeled.input {
+				margin: 4px 0;
+				.black.inverted.label {
+					background-color: rgba(0,0,0,.6) !important;
+					color: #FFF !important;
+
+				}
+			}
 		}
 	}
 

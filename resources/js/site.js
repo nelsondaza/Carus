@@ -361,6 +361,8 @@
 		};
 
 
+// Lugares
+		var places = [];
 // Meses
 		var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
@@ -421,83 +423,83 @@
 
 		function initialize( ) {
 
-			var $placesList = $('#places');
-			var $resultsList = $('#results .list');
 			var markerSelected = null;
-			var infowindow = new google.maps.InfoWindow();
 			var manMarkerTimeout = null;
+			var $storeMenu = $('#stores-menu');
 
 			var map = new google.maps.Map(document.getElementById('stores-map-canvas'), mapOptions);
-
 			var manMarker = new google.maps.Marker({
 				map: map,
 				icon: base_url + 'resources/img/marker_man.png'
 			});
 			manMarker.bindTo('position', map, 'center');
 
-			google.maps.event.addListener(manMarker, 'click', (function(marker) {
-				return function() {
-					clearTimeout(manMarkerTimeout);
-					infowindow.setContent('' +
-						'<div class="map-info-close"><i class="icon inverted remove"></i></div>' +
-							'<div class="content-marker">' +
-								'<h3 class="content-title">Nuevo Establecimiento</h3>' +
-								'<div class="content-body">' +
-									'<div class="left">' +
-										'<div class="ui mini action input">' +
-											'<input type="text" value="" placeholder="Nombre" id="new_store_name">' +
-											'<button class="ui teal mini right labeled icon button" id="new_store_add">' +
-												'<i class="checkmark icon"></i>' +
-												'Crear' +
-											'</button>' +
-										'</div>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-						'<div class="map-info-arrow"></div>'
-					);
-					infowindow.open(map, marker);
-					google.maps.event.addListener(map, "dragstart", function(){ infowindow.close() } );
-					map.setCenter(marker.getPosition());
-				};
-			})(manMarker));
+			$storeMenu.find('.nav').show().slideUp(0);
 
-			$( "#stores-map-canvas" ).on( "click", "#new_store_add", function() {
+			function storeNew( ) {
+				var $holder = $('#store-menu-create');
+				$holder.siblings('.nav').stop().slideUp( );
+				$holder.stop().slideDown( );
+			}
+			function storeSelect( point ) {
+				var $holder = $('#store-menu-select');
+				$holder.siblings('.nav').stop().slideUp( );
+				$holder.find('.black.inverted.label span').text(point.title);
+				$('#store_selected').val(point.store);
+				$holder.stop().slideDown( );
+			}
+			function storeNone( ) {
+				$storeMenu.find('.nav').stop().slideUp( );
+			}
 
+			$storeMenu.find('.close').click(function() {
+				storeNone();
+			});
+			$("#new_store_add").click(function() {
 				var $name = $('#new_store_name');
 				if( !$name.val() ) {
-					$('.map-info-window .action.input').addClass('error');
+					$(this).parent().addClass('error');
 					$name.focus();
 					return;
 				}
 				else {
-					$('.map-info-window .action.input').removeClass('error');
+					$(this).parent().removeClass('error');
 				}
 
+				var marker = $(this).closest('.nav').data('marker');
 				$.ajax({
-						type: "POST",
-						url: base_url + 'services/store/add',
-						data: {
-							name: $name.val( ),
-							latitude: manMarker.getPosition().lat(),
-							longitude: manMarker.getPosition().lng()
-						},
-						dataType: 'json'
-					})
-					.done(function(data){
-						if(!data.error) {
-							document.location.href = base_url + 'store/' + data.data.id;
-						}
-						else {
-							alert(data.error.msg);
-						}
-					})
-					.fail(function( jqXHR, textStatus ) {
-						}
-					);
+					type: "POST",
+					url: base_url + 'services/store/add',
+					data: {
+						name: $name.val( ),
+						latitude: manMarker.getPosition().lat(),
+						longitude: manMarker.getPosition().lng()
+					},
+					dataType: 'json'
+				})
+				.done(function(data){
+					if(!data.error) {
+						$name.val('');
+						document.location.href = base_url + 'store/' + data.data.id;
+					}
+					else {
+						alert(data.error.msg);
+					}
+				})
+				.fail(function( jqXHR, textStatus ) {
+					;
+				});
+			});
+			$("#store_selected").click(function() {
+				document.location.href = base_url + 'store/' + $(this).val();
 			});
 
+			google.maps.event.addListener(manMarker, 'click', (function(marker) {
+				return function() {
+					clearTimeout(manMarkerTimeout);
+					storeNew( );
+				};
+			})(manMarker));
 			google.maps.event.addListener(map, "dragend", function() {
 				manMarkerTimeout = setTimeout(function(){
 					google.maps.event.trigger( manMarker, 'click' );
@@ -505,21 +507,8 @@
 			});
 			google.maps.event.addListener(map, "dragstart", function(){
 				clearTimeout(manMarkerTimeout);
+				storeNone( );
 			});
-
-			/*
-			(new google.maps.Marker({
-				map: map,
-				icon: base_url + 'resources/img/marker_store.png'
-			})).bindTo('position', map, 'center');
-
-
-			(new google.maps.Marker({
-				map: map,
-				icon: base_url + 'resources/img/marker_pin2.png'
-			})).bindTo('position', map, 'center');
-			*/
-
 
 			gotoCurrentLocation( map );
 			$('#current_location').click(function(event){
@@ -534,33 +523,19 @@
 					position: place.latlog,
 					map: map,
 					icon: base_url + 'resources/img/marker_store.png',
-					title: place.title,
+					title: place.title
 				});
 
 				place.marker = marker;
 				google.maps.event.addListener(marker, 'click', (function(marker,point) {
 					return function() {
 						clearTimeout(manMarkerTimeout);
-						infowindow.setContent('' +
-								'<div class="map-info-close"><i class="icon inverted remove"></i></div>' +
-									'<div class="content-marker">' +
-										'<h3 class="content-title">' + point.title + '</h3><br>' +
-										'<button class="ui teal mini button" id="store_select" value="' + point.store  + '"><i class="sign in icon"></i> Seleccionar</button>' +
-									'</div>' +
-								'</div>' +
-								'<div class="map-info-arrow"></div>'
-						);
-						infowindow.open(map, marker);
 						markerSelected = marker;
 						map.setCenter(marker.getPosition());
-						google.maps.event.addListener(map, "dragstart", function(){ infowindow.close() } );
+						storeSelect( point );
 					};
 				})(marker, place));
 			}
-
-			$( "#stores-map-canvas" ).on( "click", "#store_select", function() {
-				document.location.href = base_url + 'store/' + $('#store_select').val();
-			});
 
 		}
 
