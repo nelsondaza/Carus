@@ -57,15 +57,33 @@
 				</form>
 			</div>
 			<div class="nav" id="product-select">
+				<i class="close large icon"></i>
+				<div class="header"></div>
+				<div class="ui mini action labeled input">
+					<div class="ui black inverted label">
+						Nuevo
+					</div>
+					<input type="number" name="price" value="" placeholder="Precio" id="product_new_price">
+					<button class="ui teal mini right labeled icon button" id="product_new_price_add">
+						<i class="checkmark icon"></i>
+						Actualizar
+					</button>
+				</div>
+				<div class="subheader">Otros precios</div>
+				<div class="list">
+					<div class="result">
+						<div class="price">$2.500</div>
+						<div class="title">Coca Cola ~ 350 [Coca Cola] </div>
+						<div class="description">@Papa John's ~ hace 9 horas a 5 km.</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<button id="current_location" class="ui circular basic yellow icon button">
-			<i class="location arrow icon"></i>
-		</button>
 	</div>
 </section>
 <script type="text/javascript">
 	var storePoint = {
+		id: <?= $store['id'] ?>,
 		lat: <?= $store['latitude'] ?>,
 		lng: <?= $store['longitude'] ?>
 	}

@@ -15,6 +15,7 @@
 			// Load the necessary stuff...
 			$this->load->model( array(
 				'manage/product_model',
+				'manage/store_model',
 				'manage/price_model',
 				'manage/brand_model',
 			) );
@@ -88,7 +89,54 @@
 					$this->data['error'] = array(
 						'code' => 20,
 						'type' => 'ProductError',
-						'msg'  => 'El producto no se ha regsitrado.'
+						'msg'  => 'El producto no se ha registrado.'
+					);
+				}
+
+			}
+			$this->shapeResponse();
+		}
+
+		function price( ) {
+
+			if ( !$this->authentication->is_signed_in() ) {
+				// Run sign out routine
+				$this->data['error'] = array(
+					'code' => 10,
+					'type' => 'AuthError',
+					'msg'  => lang( 'services_access_denied' )
+				);
+			}
+			else {
+
+				$product = $this->product_model->get_one_by_id( ( $this->input->post( 'id_product', true ) ? (int)trim( $this->input->post( 'id_product', true ) ) : null ) );
+				if( $product ) {
+					$store = $this->store_model->get_one_by_id( ( $this->input->post( 'id_store', true ) ? (int)trim( $this->input->post( 'id_store', true ) ) : null ) );
+					if( $store ) {
+
+						$price = array();
+						$price['value'] = ( $this->input->post( 'price', true ) ? trim( $this->input->post( 'price', true ) ) : null );
+						$price['id_store'] = $store['id'];
+						$price['id_account'] = $this->session->userdata( 'account_id' );
+						$price['id_product'] = $product['id'];
+						$price['user_agent'] = $this->agent->agent_string();
+						$this->price_model->insert( $price );
+
+						$this->data = $product;
+					}
+					else {
+						$this->data['error'] = array(
+							'code' => 20,
+							'type' => 'StoreError',
+							'msg'  => 'El producto no se ha registrado.'
+						);
+					}
+				}
+				else {
+					$this->data['error'] = array(
+						'code' => 10,
+						'type' => 'ProductError',
+						'msg'  => 'El producto no se ha registrado.'
 					);
 				}
 
@@ -98,13 +146,49 @@
 
 		function search( ) {
 
-			$this->data['data'] = $this->product_model->getLast( $this->input->get( 'q', true ) ? $this->input->get( 'q', true ) : null );
+			$latitude = ( $this->input->get( 'latitude', true ) ? $this->input->get( 'latitude', true ) : null );
+			$longitude = ( $this->input->get( 'longitude', true ) ? $this->input->get( 'longitude', true ) : null );
+			$q = ( $this->input->get( 'q', true ) ? trim( $this->input->get( 'q', true ) ) : null );
+			if( strpos( $q, '~' ) )
+				$q = trim( substr( $q, 0, strpos( $q, '~' ) ) );
+
+			$this->data['data'] = $this->product_model->getLast( $q, $latitude, $longitude );
 			foreach( $this->data['data'] as &$product ) {
-				unset( $product['id_account'], $product['id_brand'], $product['id_store'], $product['key'] );
-				$product['price'] = '$' . $product['price'];
+				$product['price'] = '$' . number_format( $product['price'], 0, ',', '.');
 				$product['title'] = $product['name'] . ( $product['size'] ? ' ~ ' . $product['size'] : '' ) . ( $product['brand'] ? ' [' . $product['brand'] . '] ' : '' );
-				$product['description'] = ( $product['store'] ? '@' . $product['store'] : '' ) . ( $product['price_creation'] ? ' ' . $this->toPastHumanDate( $product['price_creation'] ) : '' );
+				$product['description'] = ( $product['store'] ? '@' . $product['store'] : '' ) . ( $product['price_creation'] ? ' ~ ' . $this->toPastHumanDate( $product['price_creation'] ) : '' );
+
+				if( ( $latitude || $longitude ) && ( $product['store_latitude'] || $product['store_longitude'] ) )
+					$product['description'] .= ' a ' . $this->toHumanDistance( $latitude, $longitude, $product['store_latitude'], $product['store_longitude'] );
+
+				unset( $product['id_account'], $product['id_brand'], $product['id_store'], $product['key'], $product['store_latitude'], $product['store_longitude'] );
+
 			}
+
+
+			$this->shapeResponse();
+		}
+
+		function price_list( ) {
+
+			$id = ( $this->input->get( 'id', true ) ? $this->input->get( 'id', true ) : null );
+			$latitude = ( $this->input->get( 'latitude', true ) ? $this->input->get( 'latitude', true ) : null );
+			$longitude = ( $this->input->get( 'longitude', true ) ? $this->input->get( 'longitude', true ) : null );
+
+			$this->data['data'] = $this->product_model->getLastPrices( $id, $latitude, $longitude );
+			foreach( $this->data['data'] as &$product ) {
+				$product['price'] = '$' . number_format( $product['price'], 0, ',', '.');
+				$product['title'] = $product['name'] . ( $product['size'] ? ' ~ ' . $product['size'] : '' ) . ( $product['brand'] ? ' [' . $product['brand'] . '] ' : '' );
+				$product['description'] = ( $product['store'] ? '@' . $product['store'] : '' ) . ( $product['price_creation'] ? ' ~ ' . $this->toPastHumanDate( $product['price_creation'] ) : '' );
+
+				if( ( $latitude || $longitude ) && ( $product['store_latitude'] || $product['store_longitude'] ) )
+					$product['description'] .= ' a ' . $this->toHumanDistance( $latitude, $longitude, $product['store_latitude'], $product['store_longitude'] );
+
+				unset( $product['id_account'], $product['id_brand'], $product['id_store'], $product['key'], $product['store_latitude'], $product['store_longitude'] );
+
+			}
+
+
 			$this->shapeResponse();
 		}
 	}

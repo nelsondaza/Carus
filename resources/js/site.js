@@ -667,27 +667,27 @@
 
 				var marker = $(this).closest('.nav').data('marker');
 				$.ajax({
-						type: "POST",
-						url: base_url + 'services/product/add',
-						data: {
-							name: $name.val( ),
-							latitude: manMarker.getPosition().lat(),
-							longitude: manMarker.getPosition().lng()
-						},
-						dataType: 'json'
-					})
-					.done(function(data){
-						if(!data.error) {
-							$name.val('');
-							document.location.href = base_url + 'product/' + data.data.id;
-						}
-						else {
-							alert(data.error.msg);
-						}
-					})
-					.fail(function( jqXHR, textStatus ) {
-						;
-					});
+					type: "POST",
+					url: base_url + 'services/product/add',
+					data: {
+						name: $name.val( ),
+						latitude: manMarker.getPosition().lat(),
+						longitude: manMarker.getPosition().lng()
+					},
+					dataType: 'json'
+				})
+				.done(function(data){
+					if(!data.error) {
+						$name.val('');
+						document.location.href = base_url + 'product/' + data.data.id;
+					}
+					else {
+						alert(data.error.msg);
+					}
+				})
+				.fail(function( jqXHR, textStatus ) {
+					;
+				});
 			});
 			$("#product_selected").click(function() {
 				document.location.href = base_url + 'product/' + $(this).val();
@@ -769,12 +769,32 @@
 			$holder.stop().slideDown( );
 			$('#product-create').find('input[name="name"]').val( $('#product_search').search('get value')).focus();
 		}
-		function productSelect( point ) {
+		function productSelect( product ) {
 			var $holder = $('#product-select');
 			$holder.siblings('.nav').stop().slideUp( );
-			//$holder.find('.black.inverted.label span').text(point.title);
-			//$('#product_selected').val(point.product);
+			$holder.find('.header').text( product.title );
+			$('#product_new_price_add').data('product',product);
 			$holder.stop().slideDown( );
+
+			var $list = $holder.find('.list:first');
+			$list.empty();
+
+			$.getJSON('/services/product/price_list',{
+				id: product.id,
+				latitude: storePoint.lat,
+				longitude: storePoint.lng
+			},function(data){
+				$.each( data.data, function(index,item){
+					$list.append([
+					'<div class="result">',
+						'<div class="price">' + item.price + '</div>',
+						'<div class="title">' + item.title + '</div>',
+						'<div class="description">' + item.description + '</div>',
+					'</div>'
+					].join(''));
+				});
+			});
+
 		}
 		function productNone( ) {
 			$('#product_content').find('.nav').stop().slideUp( );
@@ -787,7 +807,7 @@
 
 		$('#product_search').search({
 			apiSettings: {
-				url: base_url + 'services/product/search?q={query}'
+				url: base_url + 'services/product/search?q={query}&latitude=' + storePoint.lat + '&longitude=' + storePoint.lng
 			},
 			fields: {
 				results : 'data',
@@ -802,9 +822,11 @@
 				'brand',
 				'size'
 			],
+			searchDelay: 300,
 			minCharacters : 3,
-			onSelect: function(result , response) {
-				console.debug( result, response );
+			onSelect: function(result, response) {
+				productSelect( result );
+				$('#product_search').search('set value','');
 			},
 			error : {
 				source      : 'No se puede realizar la búsqueda.',
@@ -875,7 +897,6 @@
 				})
 				.done(function(data){
 					$form.removeClass('loading');
-
 					if(!data.error) {
 						console.debug( data );
 					}
@@ -894,6 +915,28 @@
 			}
 		});
 
+		$('#product_new_price_add').click(function () {
+			var $self = $(this);
+			$self.addClass('loading');
+			$.ajax({
+				type: "POST",
+				url: base_url + 'services/product/price',
+				data: {
+					price: $('#product_new_price').val(),
+					id_store: storePoint.id,
+					id_product: $self.data('product').id
+				},
+				dataType: 'json'
+			})
+			.done(function(data){
+				$self.removeClass('loading');
+				if(!data.error) {
+					console.debug( data );
+				}
+			});
+		});
+
+
 	})();
 
 });
@@ -904,7 +947,7 @@
 
 
 /*
-* buscar en todo el nombre la parte de texto
+* buscar en todo el nombre la parte de texto [LISTO]
 *
 * resultado de comparacion de precios.
 * tiendas más cercanas a unos metros de distancia. (200mts)
@@ -921,7 +964,7 @@
 * Reporte de productos comprados, paginado, de a 5, con fecha precio y tienda.
 *
 *
-* al buscar un productos se de be filtrar así:
+* al buscar un productos se debe filtrar así:
 *
 * Precio menor.
 * FEcha de ingreso del precio.
