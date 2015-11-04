@@ -791,8 +791,17 @@
 			},
 			fields: {
 				results : 'data',
-				title   : 'name'
+				title   : 'title',
+				description: 'description',
+				price: 'price',
+				action: 'action',
+				actionText: 'actionText'
 			},
+			searchFields: [
+				'name',
+				'brand',
+				'size'
+			],
 			minCharacters : 3,
 			onSelect: function(result , response) {
 				console.debug( result, response );

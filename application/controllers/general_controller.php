@@ -69,25 +69,26 @@
 			$this->load->config( 'account/account' );
 
 			$this->load->helper( array(
-				                     'date',
-				                     'language',
-				                     'account/ssl',
-				                     'url',
-				                     'photo',
-				                     'form',
-				                     'sources'
-			                     ) );
+					'date',
+					'language',
+					'account/ssl',
+					'url',
+					'photo',
+					'form',
+					'sources',
+					'text'
+				) );
 
 			$this->load->library( array(
-				                      'account/authentication',
-				                      'account/authorization',
-				                      'form_validation'
-			                      ) );
+                  'account/authentication',
+                  'account/authorization',
+                  'form_validation'
+              ) );
 
 			$this->load->model( array(
-				                    'account/account_model',
-				                    'account/account_details_model'
-			                    ) );
+                'account/account_model',
+                'account/account_details_model'
+            ) );
 			$this->load->language( array( 'general', 'calendar' ) );
 
 			if( $this->scope !== null ) {
@@ -306,5 +307,68 @@
 				$this->load->language( array( $this->scope . '/objects' ) );
 				$this->renderObjects_save($data);
 			}
+		}
+
+		public final function toKey( $string ) {
+			return preg_replace( '/([^a-z0-9]+)/i', '-', strtolower( trim( convert_accented_characters( $string ) ) ) );
+		}
+
+		public final function toPastHumanDate($fecha)
+		{
+			if (!is_numeric($fecha))
+				$fecha = strtotime($fecha);
+
+			$diferencia = time() - $fecha;
+			$segundos = $diferencia;
+			$minutos = floor($diferencia / 60);
+			$horas = floor($diferencia / 3600);
+			$dias = floor($diferencia / 86400);
+			$semanas = floor($diferencia / 604800);
+			$mes = floor($diferencia / 2419200);
+			$anio = floor($diferencia / 29030400);
+
+			$text = "";
+
+			if ($segundos <= 60) {
+				$text = "hace segundos";
+			} else if ($minutos <= 60) {
+				if ($minutos == 1) {
+					$text = "hace un minuto";
+				} else {
+					$text = "hace $minutos minutos";
+				}
+			} else if ($horas <= 24) {
+				if ($horas == 1) {
+					$text = "hace una hora";
+				} else {
+					$text = "hace $horas horas";
+				}
+			} else if ($dias <= 7) {
+				if ($dias == 1) {
+					$text = "hace un dia";
+				} else {
+					$text = "hace $dias dias";
+				}
+			} else if ($semanas <= 4) {
+				if ($semanas == 1) {
+					$text = "hace una semana";
+				} else {
+					$text = "hace $semanas semanas";
+				}
+			} else if ($mes <= 12) {
+				if ($mes == 1) {
+					$text = "hace un mes";
+				} else {
+					$text = "hace $mes meses";
+				}
+			} else {
+				if ($anio == 1) {
+					$text = "hace un año";
+				} else {
+					$text = "hace $anio año;s";
+				}
+			}
+
+			return $text;
 		}
 	}

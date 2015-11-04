@@ -23,6 +23,7 @@
 			<div class="nav" id="product-create">
 				<i class="close large icon"></i>
 				<form id="product-form" class="ui small form" autocomplete="off" action="" method="post">
+					<input type="hidden" value="<?= $store['id'] ?>" name="id_store" />
 					<div class="inline fields">
 						<div class="field">
 							<div class="ui left icon input">

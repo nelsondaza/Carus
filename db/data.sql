@@ -100,8 +100,10 @@ INSERT INTO `a3m_rel_role_permission` (`role_id`, `permission_id`) VALUES
 /*!40000 ALTER TABLE `action_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `action_log` ENABLE KEYS */;
 
--- Volcando datos para la tabla carus_db.brand: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla carus_db.brand: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `brand` DISABLE KEYS */;
+INSERT INTO `brand` (`id`, `name`, `key`, `logo`, `creation`) VALUES
+	(1, 'Coca Cola', 'coca-cola', NULL, '2015-11-03 20:28:51');
 /*!40000 ALTER TABLE `brand` ENABLE KEYS */;
 
 -- Volcando datos para la tabla carus_db.ci_sessions: ~8 rows (aproximadamente)
@@ -110,8 +112,8 @@ INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activ
 	('09225075d429c7215f811a1801497816', '192.168.0.5', 'Mozilla/5.0 (Android 4.4; Tablet; rv:41.0) Gecko/41.0 Firefox/41.0', 1446100394, 'a:1:{s:10:"account_id";s:1:"2";}'),
 	('0e45fb2ef34873e6a56466707287e135', '192.168.0.5', 'Mozilla/5.0 (Linux; U; Android 3.2; es-ES; GT-P7500 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 OPR', 1446091418, ''),
 	('1536f980aba763bf018323e89f4fd537', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36', 1446097096, 'a:2:{s:23:"sign_in_failed_attempts";i:1;s:10:"account_id";i:1;}'),
+	('33a358d4e59eb0f7992d3cccdd631e0d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36', 1446601858, 'a:2:{s:9:"user_data";s:0:"";s:10:"account_id";s:1:"2";}'),
 	('50a7a4c71c75ad89170d014850b18cc7', '192.168.0.5', 'Mozilla/5.0 (Linux; U; Android 3.2; es-es; GT-P7500 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Saf', 1446091059, ''),
-	('8d244ebfb729a03582fd83883a114a18', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36', 1446177392, 'a:2:{s:9:"user_data";s:0:"";s:10:"account_id";s:1:"2";}'),
 	('94cfa3fb9c4d1d815c25f12448f0ac7c', '192.168.0.5', 'Mozilla/5.0 (Linux; U; Android 3.2; es-LA; GT-P7500 Build/HTJ85B) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 UCB', 1446091535, ''),
 	('987fce20db62474d4319ea774b90adbc', '192.168.0.4', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36', 1446104257, 'a:1:{s:10:"account_id";s:1:"2";}'),
 	('c5d3364a1a4babbefd20af4b8721ca77', '192.168.0.6', 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) CriOS/46.0.2490.73 Mobile/', 1446104244, 'a:1:{s:10:"account_id";s:1:"2";}');
@@ -131,10 +133,14 @@ INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activ
 
 -- Volcando datos para la tabla carus_db.price: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `price` DISABLE KEYS */;
+INSERT INTO `price` (`id`, `id_account`, `id_product`, `id_store`, `cod_currency`, `value`, `creation`, `user_agent`) VALUES
+	(4, 2, 4, 6, NULL, 2500, '2015-11-03 20:32:40', 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53');
 /*!40000 ALTER TABLE `price` ENABLE KEYS */;
 
--- Volcando datos para la tabla carus_db.product: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla carus_db.product: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` (`id`, `id_account`, `id_brand`, `name`, `size`, `key`, `creation`) VALUES
+	(4, 2, 1, 'Coca Cola', '350', 'coca-cola-350-coca-cola', '2015-11-03 20:28:51');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
 -- Volcando datos para la tabla carus_db.ref_country: 246 rows
@@ -100938,14 +100944,15 @@ INSERT INTO `ref_zoneinfo` (`zoneinfo`, `offset`, `summer`, `country`, `cicode`,
 /*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
 /*!40000 ALTER TABLE `role_permission` ENABLE KEYS */;
 
--- Volcando datos para la tabla carus_db.store: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla carus_db.store: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `store` DISABLE KEYS */;
 INSERT INTO `store` (`id`, `id_account`, `name`, `key`, `latitude`, `longitude`, `creation`) VALUES
 	(1, '2', 'Las Rejas', 'las-rejas', 4.662893767810535, -74.05247563389891, '2015-10-29 21:10:45'),
 	(2, '2', 'Doña Edu.', 'dona-edu', 4.662401874632938, -74.05277604130858, '2015-10-29 21:13:57'),
 	(3, '2', 'UDC', 'UDC', 4.622986480722335, -74.06626755265349, '2015-10-29 21:21:54'),
 	(4, '2', 'Subway', 'Subway', 4.626287555890139, -74.06580554215067, '2015-10-29 21:42:03'),
-	(5, '2', 'Panadería', 'Panaderia', 4.621613645984939, -74.0667570557987, '2015-10-29 21:43:36');
+	(5, '2', 'Panadería', 'Panaderia', 4.621613645984939, -74.0667570557987, '2015-10-29 21:43:36'),
+	(6, '2', 'Papa John\'s', 'Papa-John-s', 4.662810894528568, -74.04861325291746, '2015-11-03 15:08:29');
 /*!40000 ALTER TABLE `store` ENABLE KEYS */;
 
 -- Volcando datos para la tabla carus_db.vote: ~0 rows (aproximadamente)

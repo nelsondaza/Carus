@@ -47,16 +47,17 @@
 				$attributes['latitude'] = ( $this->input->post( 'latitude', true ) ? $this->input->post( 'latitude', true ) : null );
 				$attributes['longitude'] = ( $this->input->post( 'longitude', true ) ? $this->input->post( 'longitude', true ) : null );
 				$attributes['id_account'] = $this->session->userdata( 'account_id' );;
-				$attributes['key'] = preg_replace( '/([^a-z0-9])/i', '-', trim( convert_accented_characters( $attributes['name'] ) ) );
+				$attributes['key'] = $this->toKey( $attributes['name'] );
 
-				if( !trim( preg_replace( '/([^a-z0-9])/', '', strtolower( convert_accented_characters( $attributes['name'] ) ) ) ) ) {
+				if( !preg_replace( '/([^a-z0-9]+)/', '', $attributes['key'] ) ) {
 					$this->data['error'] = array(
 						'code' => 20,
 						'type' => 'NoNameError',
-						'msg'  => 'Nombre incorrecto: ' . convert_accented_characters( $attributes['name'] )
+						'msg'  => 'Nombre incorrecto: ' . $attributes['name']
 					);
 				}
 				else {
+					$attributes['name'] = ucwords( strtolower( $attributes['name'] ) );
 					$id = $this->store_model->insert( $attributes );
 					$this->data = $this->store_model->get_one_by_id( $id );
 				}

@@ -212,6 +212,7 @@ CREATE TABLE IF NOT EXISTS `action_log` (
 CREATE TABLE IF NOT EXISTS `brand` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identificador único de la tabla.|1006',
   `name` varchar(50) NOT NULL COMMENT 'Nombre de la marca.|Roa',
+  `key` varchar(100) NOT NULL,
   `logo` varchar(250) DEFAULT NULL COMMENT 'Url de la imagen para la marca.|/resources/brands/logo1.jpg',
   `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha y hora de creación del registro.|''2014-12-01 14:00:00''',
   PRIMARY KEY (`id`),
@@ -288,9 +289,8 @@ CREATE TABLE IF NOT EXISTS `price` (
   `id_account` bigint(20) unsigned NOT NULL COMMENT 'FK Identificador de la cuenta.|1007',
   `id_product` bigint(20) unsigned NOT NULL COMMENT 'FK Identificador del producto.|1008',
   `id_store` bigint(20) unsigned NOT NULL COMMENT 'FK Identificador de la tienda.|1009',
-  `cod_currency` char(3) NOT NULL COMMENT 'FK Identificador de la moneda.|1006',
+  `cod_currency` char(3) DEFAULT NULL COMMENT 'FK Identificador de la moneda.|1006',
   `value` double NOT NULL DEFAULT '0' COMMENT 'Precio del producto.|5680.00',
-  `location` varchar(150) DEFAULT NULL COMMENT 'Coordenadas terrestres del punto donde se registró el precio.|4.754812,-74.044678',
   `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Fecha y hora de creación del registro.|''2014-12-01 14:00:00''',
   `user_agent` varchar(250) NOT NULL COMMENT 'Cadena de identificación del agente cliente usado para hacer el registro.|Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36',
   PRIMARY KEY (`id`),
@@ -300,8 +300,6 @@ CREATE TABLE IF NOT EXISTS `price` (
   KEY `fk_price_product1_idx` (`id_product`),
   KEY `fk_price_account1_idx` (`id_account`),
   KEY `creation` (`creation`),
-  CONSTRAINT `fk_price_account1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_price_currency1` FOREIGN KEY (`cod_currency`) REFERENCES `currency` (`alpha`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_price_product1` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_price_store1` FOREIGN KEY (`id_store`) REFERENCES `store` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Precio del producto en un establecimiento específico.';
@@ -312,17 +310,18 @@ CREATE TABLE IF NOT EXISTS `price` (
 -- Volcando estructura para tabla carus_db.product
 CREATE TABLE IF NOT EXISTS `product` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identificador único por registro.|1004',
-  `id_brand` bigint(20) unsigned NOT NULL COMMENT 'FK Identificador de la marca.|1006',
+  `id_account` bigint(20) unsigned NOT NULL,
+  `id_brand` bigint(20) unsigned DEFAULT NULL COMMENT 'FK Identificador de la marca.|1006',
   `name` varchar(100) NOT NULL COMMENT 'Nombre del producto.|Arroz',
   `size` varchar(50) DEFAULT NULL COMMENT 'Tamaño del producto.|500g',
-  `key` varchar(45) NOT NULL COMMENT 'Identificador único basado en el nombre y el tamaño para realizar búsquedas rápidas.|arroz500',
+  `key` varchar(100) NOT NULL COMMENT 'Identificador único basado en el nombre y el tamaño para realizar búsquedas rápidas.|arroz500',
   `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Fecha de creación del registro.|2014-12-01 14:00:00.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `key_UNIQUE` (`key`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_product_brand1_idx` (`id_brand`),
   KEY `name` (`name`),
   KEY `size` (`size`),
+  KEY `key` (`key`),
   CONSTRAINT `fk_product_brand1` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Productos';
 
