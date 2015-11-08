@@ -20,19 +20,19 @@
 						<div class="gridster">
 							<div class="widget teal" data-row="1" data-col="1" data-sizex="4" data-sizey="3">
 								<div class="head">
-                                    PACIENTES POR GÉNERO
+                                    ÚLTIMOS PRECIOS REGISTRADOS
 								</div>
 								<div class="body" id="upp"></div>
 							</div>
 							<div class="widget teal" data-row="1" data-col="5" data-sizex="4" data-sizey="3">
 								<div class="head">
-									PACIENTES POR GRUPO DE EDAD
+									PRODUCTOS POR MARCA
 								</div>
 								<div class="body" id="upt"></div>
 							</div>
 							<div class="widget orange" data-row="5" data-col="1" data-sizex="8" data-sizey="3">
 								<div class="head">
-                                    PACIENTES REGISTRADOS POR DÍA
+                                    PRECIOS REGISTRADOS POR DÍA
 								</div>
 								<div class="body" id="uph"></div>
 							</div>
@@ -66,31 +66,73 @@
 				});
 			</script>
 <?php
-	/*
 	//
-	$this->db->select('msf_patients.gender, COUNT(*) AS total');
-	$this->db->where('gender IS NOT NULL');
-	$this->db->group_by('gender');
-	$rows = $this->db->get('msf_patients')->result_array( );
+	$this->db->select('price.value, price.creation, product.name, product.size, brand.name as brand');
+	$this->db->join( 'product', 'product.id = price.id_product' );
+	$this->db->join( 'brand', 'product.id_brand = brand.id', 'LEFT' );
+	$this->db->group_by('price.id_product');
+	$this->db->order_by('price.creation DESC');
+	$this->db->order_by('price.value DESC');
+	$this->db->limit(10);
+	$rows = $this->db->get('price')->result_array( );
 
-	$user_types = array(
-        'M' => 0,
-        'F' => 0,
-        'I' => 0,
-    );
+	$data = array( );
 	foreach( $rows as $row ) {
-		$user_types[$row['gender']] = $row['total'];
+		$data[$row['name'] . ( $row['size'] ? ' ~' . $row['size'] : '' ) . ( $row['brand'] ? ' (' . $row['brand'] . ')' : '' ) ] = $row['value'];
 	}
 
 	$pie = array(
-		'name' => 'Pacientes por género',
-		'data' => $user_types
+		'name' => 'Últimos Precios',
+		'data' => $data
 	);
 ?>
 <script type="text/javascript">
+$(function () {
+	$('#upp').highcharts({
+        chart: {
+            type: 'column',
+            margin: 35,
+            options3d: {
+                enabled: true,
+                alpha: 10,
+                beta: 25,
+                depth: 70
+            }
+        },
+		credits: {
+			enabled: false
+		},
+        title: null,
+        subtitle: null,
+		legend: {
+			enabled: false
+		},
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        xAxis: {
+            categories: <?= json_encode( array_keys( $pie['data'] ), JSON_UNESCAPED_UNICODE) ?>,
+	        labels: {
+		        enabled: false
+	        }
+        },
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+        series: [{
+            name: 'Precio',
+	        data: <?= json_encode( array_values( $pie['data'] ), JSON_NUMERIC_CHECK) ?>
+        }]
+    });
+});
+
 	$(function () {
 		// Build chart 1
-		$('#upp').highcharts({
+		$('#uph2').highcharts({
 			chart: {
 				plotBackgroundColor: null,
 				plotBorderWidth: null,
@@ -101,23 +143,34 @@
 				pointFormat: '<b>{point.y}</b>'
 			},
 			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: false
-					},
-					showInLegend: <?= ( count( $pie['data']) > 6 ? 'false' : 'true' ) ?>
-				}
+                area: {
+                    fillColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
 			},
 			series: [{
-				type: 'pie',
+				type: 'area',
 				name: ('<?= ( $pie['name'] ) ?>'),
 				data: [
 <?php
 		foreach( $pie['data'] as $key => $value ) {
 ?>
-					['<?= ( $key == 'F' ? 'FEMENINO' : ( $key == 'M' ? 'MASCULINO' : 'INDEFINIDO' ) ) ?>', <?= (float)( $value ) ?> ],
+					['<?= $key ?>', <?= (float)( $value ) ?> ],
 <?php
 		}
 ?>
@@ -128,22 +181,19 @@
 </script>
 <?php
 	// Users type
-	$this->db->select("
-		( IF( msf_patients.age IS NULL OR msf_patients.age <= 5, '≤ 5', IF( msf_patients.age >= 19, '≥ 19', '6-18' ) ) ) AS age_group, COUNT(*) AS total
-		", false
-	);
-	$this->db->where('msf_patients.gender IS NOT NULL');
-	$this->db->group_by('age_group');
-	$this->db->order_by('age');
-	$rows = $this->db->get('msf_patients')->result_array( );
+	$this->db->select('COALESCE(brand.name, "Sin Marca") AS name, COUNT(*) as total', false);
+	$this->db->join( 'brand', 'product.id_brand = brand.id', 'LEFT' );
+	$this->db->group_by('brand.id');
+	$this->db->order_by('brand.name ASC');
+	$rows = $this->db->get('product')->result_array( );
 
 	$user_types = array( );
 	foreach( $rows as $row ) {
-		$user_types[$row['age_group']] = $row['total'];
+		$user_types[$row['name']] = $row['total'];
 	}
 
 	$pie = array(
-		'name' => 'Pacientes por Grupo de Edad',
+		'name' => 'Productos',
 		'data' => $user_types
 	);
 ?>
@@ -151,29 +201,24 @@
 	$(function () {
 		// Build chart 1
 		$('#upt').highcharts({
-			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: null,
-				plotShadow: false
-			},
-			title: null,
-			tooltip: {
-				pointFormat: '<b>{point.y}</b>'
-			},
-			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: false
-					},
-					showInLegend: <?= ( count( $pie['data']) > 6 ? 'false' : 'true' ) ?>
-				}
-			},
-			series: [{
-				type: 'pie',
-				name: ('<?= ( $pie['name'] ) ?>'),
-				data: [
+	        chart: {
+	            type: 'pie',
+	            options3d: {
+	                enabled: true,
+	                alpha: 45
+	            }
+	        },
+	        title: null,
+	        subtitle: null,
+	        plotOptions: {
+	            pie: {
+	                innerSize: 100,
+	                depth: 45
+	            }
+	        },
+	        series: [{
+		        name: ('<?= ( $pie['name'] ) ?>'),
+	            data: [
 <?php
 		foreach( $pie['data'] as $key => $value ) {
 ?>
@@ -181,21 +226,22 @@
 <?php
 		}
 ?>
-				]
-			}]
-		});
+	            ]
+	        }]
+	    });
+
 	});
 </script>
 <?php
+
 	$rows = array();
 
 	// Users type
 	$query = $this->db->query ( "
 		SELECT
 		LEFT(creation, 10) AS fecha, COUNT(*) AS total
-		FROM msf_patients
+		FROM price
 		WHERE creation > DATE_ADD(NOW(), INTERVAL -20 DAY)
-		AND gender IS NOT NULL
 		GROUP BY
 		LEFT(creation, 10)
 		ORDER BY fecha ASC
@@ -208,7 +254,7 @@
 	}
 
 	$pie = array(
-		'name' => 'Pacientes registrados por día',
+		'name' => 'Precios registrados por día',
 		'data' => $user_types
 	);
 ?>
@@ -271,7 +317,6 @@
 	});
 </script>
 	<?php
-	*/
 ?>
 </div>
         </div>
