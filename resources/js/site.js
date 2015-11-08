@@ -552,7 +552,7 @@
 
 //Map Options
 		var mapOptions = {
-			zoom: 16,
+			zoom: 19,
 			center: initialLocation,
 			styles: styleMap,
 			streetViewControl: false,
@@ -565,6 +565,9 @@
 // Meses
 		var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
+		function gotoSoreLocation( map ) {
+			map.setCenter(initialLocation);
+		}
 		function gotoCurrentLocation( map ) {
 			var $locationButton = $('#current_location');
 			var popupTimeout = null;
@@ -632,6 +635,12 @@
 				icon: base_url + 'resources/img/marker_man.png'
 			});
 			manMarker.bindTo('position', map, 'center');
+
+			var storeMarker = new google.maps.Marker({
+				position: new google.maps.LatLng(storePoint.lat,storePoint.lng),
+				map: map,
+				icon: base_url + 'resources/img/marker_store.png',
+			});
 
 			$productMenu.find('.nav').show().slideUp(0);
 
@@ -709,10 +718,14 @@
 				productNone( );
 			});
 
-			gotoCurrentLocation( map );
+			gotoSoreLocation( map );
 			$('#current_location').click(function(event){
 				event.preventDefault();
 				gotoCurrentLocation( map );
+			});
+			$('#product_search').find('.teal.label').click(function(event){
+				event.preventDefault();
+				gotoSoreLocation( map );
 			});
 
 
@@ -898,7 +911,7 @@
 				.done(function(data){
 					$form.removeClass('loading');
 					if(!data.error) {
-						console.debug( data );
+						productSelect( data.data );
 					}
 					else {
 						$form.form('add errors', [data.error.msg]);
@@ -931,7 +944,7 @@
 			.done(function(data){
 				$self.removeClass('loading');
 				if(!data.error) {
-					console.debug( data );
+					productSelect( data.data );
 				}
 			});
 		});
@@ -986,3 +999,13 @@
 *
 *
 * */
+
+/*
+
+ textos
+ calculo de distancia
+ opción de eliminar producto
+
+
+
+ **/

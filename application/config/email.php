@@ -30,12 +30,12 @@
 |
 */
 
-	$config['protocol']    = 'smtp';
-	$config['smtp_host']    = 'ssl://smtp.gmail.com';
-	$config['smtp_port']    = '465';
+//	$config['protocol']    = 'smtp';
+//	$config['smtp_host']    = 'ssl://smtp.gmail.com';
+//	$config['smtp_port']    = '465';
 	$config['smtp_timeout'] = '7';
 	$config['smtp_user']    = 'carus@nelsondaza.com';
-	$config['smtp_pass']    = '*72>heEL';
+//	$config['smtp_pass']    = '*72>heEL';
 	$config['charset']    = 'utf-8';
 	$config['newline']    = "\r\n";
 	$config['mailtype'] = 'html'; // or html

@@ -110,7 +110,7 @@
 		}
 		else {
 ?>
-			<?= form_button(array('name' => 'manage_permission_ban', 'value' => lang('permissions_ban'), 'type' => 'submit', 'class' => 'ui submit negative button small left floated', 'content' => '<i class="ban icon"></i> ' . lang('permissions_ban'))); ?>
+			<?= form_button(array('name' => 'manage_permission_ban', 'value' => lang('permissions_ban'), 'type' => 'submit', 'class' => 'ui submit negative button small floated', 'content' => '<i class="ban icon"></i> ' . lang('permissions_ban'))); ?>
 <?
 		}
 	}

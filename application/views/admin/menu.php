@@ -15,15 +15,12 @@
 ?>
 <div class="ui vertical inverted sidebar menu" id="toc">
 	<div class="item">
-		<a class="ui logo icon image" href="<?= base_url() ?>">
-			<img src="<?= base_url() ?>resources/img/icon.png" alt="MSF">
+		<a class="ui logo icon image" href="<?= base_url() ?>admin">
+			<img src="<?= base_url() ?>resources/img/icon-white.png" alt="Carus" width="40">
 		</a>
-		<a href="<?= base_url() ?>"><b>Médicos Sin Fronteras</b></a>
+		<a href="<?= base_url() ?>admin"><b>Carus</b></a>
 	</div>
 <?php
-	echo anchor( base_url(), '<i class="home icon"></i> ' . lang( 'website_home' ), array( 'class' => 'item' . ( $current == 'home' ? ' active' : '' ) ) );
-	echo anchor( '#', '<i class="doctor icon"></i> Consulta', array( 'class' => 'consult-action item' . ( $current == 'history' ? ' active' : '' ) ) );
-
 	$active = ( in_array( $current, array( 'account_profile', 'account_settings', 'account_password' ) ) );
 ?>
 		<div class="item <?= ( $active ? 'active' : '' ) ?>">
@@ -135,7 +132,6 @@
 		</div>
 <?php
 	}
-	echo anchor( base_url(), '<i class="home icon"></i>' . lang( 'website_home' ), array( 'class' => 'item' . ( $current == 'home' ? ' active' : '' ) ) );
 ?>
 </div>
 <div class="ui black big launch right attached fixed button">

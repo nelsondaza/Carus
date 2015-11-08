@@ -63,7 +63,7 @@
 ?>
 <a class="ui black button mini" style="float: right" href="<?= base_url() ?>services/export/excel"><i class="file excel outline icon"></i> Excel</a>
 <div class="table-scroll">
-<table class="ui celled striped table small sortable ">
+<table class="ui celled striped small very compact sortable table ">
 <?php
 	if( !empty( $headers ) ) {
 ?>
@@ -71,10 +71,10 @@
 	<tr>
 <?php
 		if( !empty( $rows_options ) )
-			echo '<th></th>';
+			echo '<th class="collapsing"></th>';
 		foreach( $headers as $header ) {
 ?>
-			<th><?= $header ?></th>
+			<th class="collapsing"><?= $header ?></th>
 <?php
 		}
 ?>

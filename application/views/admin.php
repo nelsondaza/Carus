@@ -13,12 +13,6 @@
             <i class="icon home"></i> <?= lang('website_home') ?>
         </div>
         <div class="section">
-			<button class="ui black button consult-action">
-				<i class="icon doctor"></i>
-				Consulta
-			</button>
-			<br>
-			<br>
 		<div class="flow">
 			<div class="page">
 				<div class="holder" style="height: 704px !important;">

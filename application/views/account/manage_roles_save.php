@@ -108,7 +108,7 @@
 		}
 		else {
 ?>
-			<?= form_button(array('name' => 'manage_role_ban', 'value' => lang('roles_ban'), 'type' => 'submit', 'class' => 'ui submit negative button small left floated', 'content' => '<i class="ban icon"></i> ' . lang('roles_ban'))); ?>
+			<?= form_button(array('name' => 'manage_role_ban', 'value' => lang('roles_ban'), 'type' => 'submit', 'class' => 'ui submit negative button small floated', 'content' => '<i class="ban icon"></i> ' . lang('roles_ban'))); ?>
 <?
 		}
 	}

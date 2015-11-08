@@ -24,7 +24,7 @@
 <div class="breadcrumb">
 	<div class="ui small breadcrumb">
 		<div class="divider"> / </div>
-		<a class="section" href="<?= base_url( ) ?>">Home</a>
+		<a class="section" href="<?= base_url( ) ?>admin">Home</a>
 <?php
 	foreach( $path as $key => $value ) {
 ?>

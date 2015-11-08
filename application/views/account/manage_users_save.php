@@ -178,12 +178,12 @@
 	if( $this->authorization->is_permitted('ban_users') && $action == 'update' ) {
 		if ( isset( $update_account->suspendedon ) ) {
 ?>
-			<?= form_button(array('name' => 'manage_user_unban', 'value' => lang('users_unban'), 'type' => 'submit', 'class' => 'ui submit positive button small left floated', 'content' => '<i class="ban icon"></i> ' . lang('users_unban'))); ?>
+			<?= form_button(array('name' => 'manage_user_unban', 'value' => lang('users_unban'), 'type' => 'submit', 'class' => 'ui submit positive button small floated', 'content' => '<i class="ban icon"></i> ' . lang('users_unban'))); ?>
 <?
 		}
 		else {
 ?>
-			<?= form_button(array('name' => 'manage_user_ban', 'value' => lang('users_ban'), 'type' => 'submit', 'class' => 'ui submit negative button small left floated', 'content' => '<i class="ban icon"></i> ' . lang('users_ban'))); ?>
+			<?= form_button(array('name' => 'manage_user_ban', 'value' => lang('users_ban'), 'type' => 'submit', 'class' => 'ui submit negative button small floated', 'content' => '<i class="ban icon"></i> ' . lang('users_ban'))); ?>
 <?
 		}
 	}

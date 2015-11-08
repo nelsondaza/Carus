@@ -2,7 +2,7 @@
 <div class="ui fixed main menu">
 	<div class="container">
 		<div class="title item">
-			<a href="<?= base_url() ?>"><img src="<?= base_url() ?>resources/img/icon.png" alt="Carus"></a>
+			<a href="<?= base_url() ?>admin"><img src="<?= base_url() ?>resources/img/icon.png" alt="Carus"></a>
 		</div>
 		<div class="right menu">
 <?php

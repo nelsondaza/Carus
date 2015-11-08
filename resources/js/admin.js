@@ -35,7 +35,7 @@ $(function () {
 	});
 
 	$('.ui.menu.dash.sticky').sticky({offset: 70});
-	$('.ui.bcrumb.sticky').sticky({offset: 69});
+	$('.ui.bcrumb.sticky').sticky({offset: 53});
 	$('.ui.menu.pointing .item').tab({
 		context:'parent'
 	});
