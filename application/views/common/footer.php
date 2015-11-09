@@ -1,9 +1,22 @@
+<?
+/**
+ * Created by PhpStorm.
+ * User: nelson.daza
+ * Date: 27/11/2014
+ * Time: 10:30 AM
+ */
+	$action = ( isset( $action ) && $action ? $action : null );
+?>
 <footer>
+	<div class="ui fullscreen modal" id="footer-contents">
+		<i class="huge close icon"></i>
+		<div class="content">content</div>
+	</div>
 	<div class="right">
 		<div class="ui basic mini buttons">
-			<button class="ui button">¿Carus?</button>
-			<button class="ui button">T<span class="mobile">yC.</span><span class="desktop">érminos</span></button>
-			<button class="ui button">Priv<span class="mobile">.</span><span class="desktop">acidad</span></button>
+			<a href="<?= base_url() ?>policy/carus" class="ui button <?= $action == 'carus' ? 'active' : '' ?>" id="footer-carus">¿Carus?</a>
+			<a href="<?= base_url() ?>policy/terms-of-service" class="ui button <?= $action == 'terms' ? 'active' : '' ?>" id="footer-terms">T<span class="mobile">yC.</span><span class="desktop">érminos</span></a>
+			<a href="<?= base_url() ?>policy/privacy" class="ui button <?= $action == 'privacy' ? 'active' : '' ?>" id="footer-privacy">Priv<span class="mobile">.</span><span class="desktop">acidad</span></a>
 		</div>
 	</div>
 </footer>

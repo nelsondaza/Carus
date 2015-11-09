@@ -133,12 +133,15 @@
 				try {
 					if( !is_array( $response ) )
 						$this->data = @json_decode( $response );
+					if( !$this->data && $response )
+						$this->data = $response;
 				}
 				catch( Exception $e ) {
 					$this->data = null;
 				}
 
 				$this->shapeResponse();
+				return;
 			}
 
 			trigger_error( 'Function "' . $name . '" not defined for "' . get_class( $this ) . '".', E_USER_ERROR );

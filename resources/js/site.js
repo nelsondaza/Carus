@@ -134,6 +134,54 @@
 
 	})();
 
+	// footer
+	(function(){
+
+		var footerContents = {};
+		var actualContent = null;
+		var $footerContents = $('#footer-contents');
+
+		function showModalContent( html ) {
+			$footerContents.find('.content').html( html );
+			$footerContents.modal('show').modal('refresh');
+		}
+
+		function hideModalContent( ) {
+			$footerContents.find('.content').empty( );
+			$footerContents.modal('hide');
+		}
+
+		$('footer .buttons a.button').click(function( event ){
+			event.preventDefault();
+			var $self = $(this);
+
+			/*
+			if( actualContent == $self.prop('id') ) {
+				hideModalContent( );
+				return;
+			}
+			*/
+
+			actualContent = $self.prop('id');
+			if( false && footerContents[actualContent] ) {
+				showModalContent( footerContents[actualContent] );
+			}
+			else {
+				$.ajax({
+					type: "GET",
+					url: base_url + 'services/policy/' + $self.prop('id').replace(/(footer-)/, ''),
+					dataType: 'json'
+				})
+				.done(function(data){
+					footerContents[$self.prop('id')] = data.data;
+					if( actualContent == $self.prop('id') )
+						showModalContent( footerContents[actualContent] );
+				});
+			}
+		});
+
+	})();
+
 	// login
 	(function(){
 		$('#login-form').form({
@@ -963,18 +1011,6 @@
 /*
 *
 * en el buscador mostrar resultados en mapa.
-*
-* Reporte de productos comprados, paginado, de a 5, con fecha precio y tienda.
-*
-*
-* al buscar un productos se debe filtrar así:
-*
-* Precio menor.
-* FEcha de ingreso del precio.
-* distancia a la ubicación actual.
-* limitado a 5.
-*
-*
 *
 * ADMINIOSTRACION
 *
