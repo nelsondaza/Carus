@@ -26,7 +26,8 @@
 <script src="<?= base_url() ?>resources/js/vendor/jquery.gridster.with-extras.min.js"></script>
 <script src="<?= base_url() ?>resources/js/vendor/highcharts/highcharts.js"></script>
 <script src="<?= base_url() ?>resources/js/vendor/highcharts/highcharts-3d.js"></script>
-<script src="<?= base_url() ?>/resources/js/vendor/highcharts/modules/exporting.js"></script>
+<script src="<?= base_url() ?>/resources/js/vendor/highcharts/themes/grid-light.js"></script>
+<script src="<?= base_url() ?>resources/js/vendor/highcharts/modules/exporting.js"></script>
 
 <script src="<?= base_url() ?>resources/js/plugins.js"></script>
 <script src="<?= base_url() ?>resources/js/admin.js"></script>

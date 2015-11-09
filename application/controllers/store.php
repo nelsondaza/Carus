@@ -15,10 +15,10 @@
 			$this->load->model(array('manage/store_model'));
 
 		}
-		function index( $id ) {
+		function index( $id = 0 ) {
 
 			$data = $this->auth( true );
-			if( $id <= 0 )
+			if( (int)$id <= 0 )
 				redirect('');
 
 			if( $this->account_model->get_by_id( $this->session->userdata( 'account_id' ) ) ) {
@@ -27,7 +27,7 @@
 				$data['account_details']  = $this->account_details_model->get_by_account_id( $this->session->userdata( 'account_id' ) );
 		    }
 
-			$data['store'] = $this->store_model->get_one_by_id( $id );
+			$data['store'] = $this->store_model->get_one_by_id( (int)$id );
 
 			$this->view( $data );
 		}

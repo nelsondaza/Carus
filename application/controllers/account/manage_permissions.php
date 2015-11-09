@@ -192,7 +192,7 @@ class Manage_permissions extends CI_Controller {
         $perms = array();
         foreach( $data['roles'] as $role )
         {
-          if( $this->input->post("role_permission_{$role->id}", TRUE) )
+          if( in_array( $role->id, (array)$this->input->post("role_permissions", TRUE) ) )
           {
             $this->rel_role_permission_model->update($role->id, $id);
           }

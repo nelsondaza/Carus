@@ -75,8 +75,7 @@
 	$checkboxes = array( );
 	foreach( $roles as $role ) {
 		$checkbox = array(
-			'name' => "role_permission_{$role->id}",
-			'value' => 'apply',
+			'value' => $role->id,
 			'label' => $role->name
 		);
 		if( isset( $role_permissions ) ) {
@@ -95,6 +94,8 @@
 	        'label' => lang('permissions_role'),
 	        'attributes' => array(
 		        'type' => 'multicheckbox',
+		        'name' => "role_permissions",
+		        'id' => "role_permissions",
 	        )
 		)
 	);
