@@ -19,6 +19,35 @@
 		.nav {
 			height: 35px;
 			.search {
+				input.prompt {
+					font-size: 12px;
+					padding: 5px 10px;
+					margin: 2px 0;
+				}
+				.results {
+					margin: 2px 0;
+					.result {
+						font-size: 12px;
+						padding: 7px 10px;
+						background-color: rgba(255,255,255,.95);
+						margin: 0 4px 1px 0;
+						.border-radius( 2px );
+
+						.title {
+							font-weight: bold;
+							color: rgba(0,0,0,.85);
+						}
+						.price {
+							font-weight: bold;
+							float: right;
+							color: #21ba45;
+						}
+						.description {
+							margin-top: 0;
+							color: rgba(0,0,0,.6);
+						}
+					}
+				}
 				.label {
 					margin-top: 5px;
 					float: right;
@@ -91,7 +120,7 @@
 						background-color: rgba(255,255,255,.95);
 						margin: 0 4px 1px 0;
 						padding: 3px 7px;
-						font-size: 11px;
+						font-size: 12px;
 						.border-radius( 2px );
 
 						.title {
