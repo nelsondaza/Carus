@@ -121,9 +121,10 @@
 			});
 		});
 
-		$('#mainMenu .button:first').popup({
-			popup : $('#mainMenu .popup:first'),
+		$('#mainMenu').find('.button:first').popup({
+			popup : $('#mainMenu').find('.popup:first'),
 			on    : 'click',
+			position : 'bottom left',
 			offset : 5,
 			delay: {
 				show: 300,
@@ -962,10 +963,6 @@
 /*
 *
 * en el buscador mostrar resultados en mapa.
-*
-* detalle de producto al buscar.
-* eliminar precio.
-* actualizar precio.
 *
 * Reporte de productos comprados, paginado, de a 5, con fecha precio y tienda.
 *

@@ -43,6 +43,8 @@ $route['404_override'] 			= '';
 
 //$route['(:any)/(:num)'] = "$1/index/$2";
 $route['store/(:num)'] = "store/index/$1";
+$route['products'] = "products/index";
+$route['products/(:num)'] = "products/index/$1";
 //$route['product/(:num)'] = "product/index/$1";
 
 

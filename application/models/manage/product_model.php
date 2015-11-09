@@ -128,5 +128,43 @@
 			return $this->db->get( $this->getTableName( ) )->result_array( );
 		}
 
+		public function getByIdAccount( $id, $limit = 5, $offset = 0 ) {
+
+			$this->db->select( $this->tableName . '.*,
+				brand.name AS brand,
+				price.value AS price,
+				price.creation AS price_creation,
+				store.name AS store,
+				store.id AS id_store,
+				', false
+			);
+			$this->db->join( 'brand', $this->tableName . '.id_brand = brand.id', 'LEFT' );
+			$this->db->join( 'price', $this->tableName . '.id = price.id_product', 'LEFT' );
+			$this->db->join( 'store', 'store.id = price.id_store', 'LEFT' );
+
+			$this->db->where( 'price.id_account', $id );
+			$this->db->group_by( array( 'store.id', 'product.id' ) );
+			$this->db->order_by( 'price_creation', 'DESC');
+			$this->db->limit( $limit );
+			$this->db->offset( $offset );
+			return $this->db->get( $this->getTableName( ) )->result_array( );
+		}
+
+		public function countByIdAccount( $id  ) {
+
+			$this->db->select( '
+				COUNT(*) AS total
+				FROM (
+					SELECT price.id
+					FROM price
+					WHERE id_account = ' . (int)$id . '
+					GROUP BY price.id_store, price.id_product
+				) AS counter
+				', false
+			);
+
+			$result = $this->db->get( )->row_array( );
+			return ( isset( $result['total'] ) ? (int)$result['total'] : 0 );
+		}
 	}
 

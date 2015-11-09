@@ -1,0 +1,26 @@
+.list.products {
+	top: 48px;
+	position: absolute;
+	bottom: 33px;
+	left: 0;
+	right: 0;
+	display: block;
+	overflow: auto;
+
+	background-color: #FFF;
+	table {
+		thead {
+			tr {
+				background-color: #CCC;
+				th {
+					color: #000;
+				}
+			}
+		}
+		tbody {
+			tr:nth-child(even) {
+				background-color: #EEE;
+			}
+		}
+	}
+}
