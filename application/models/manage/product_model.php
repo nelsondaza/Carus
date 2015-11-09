@@ -17,7 +17,16 @@
 		public function onBeforeGet( $arguments ) {
 		}
 
-		public function getLast( $q, $latitude, $longitud ) {
+		/**
+		 * Search products
+		 * @param       $q          String to search for
+		 * @param       $latitude
+		 * @param       $longitude
+		 * @param int   $distance   Distance in meters
+		 *
+		 * @return mixed
+		 */
+		public function getLast( $q, $latitude, $longitude, $distance = 1000 ) {
 
 			$this->db->select( $this->tableName . '.*,
 				brand.name AS brand,
@@ -44,7 +53,7 @@
 							)
 							* POWER(
 								SIN(
-									(store.longitude - ' . $longitud . ') * pi()/180 / 2
+									(store.longitude - ' . $longitude . ') * pi()/180 / 2
 								)
 								,2
 							)
@@ -57,16 +66,20 @@
 			$this->db->join( 'price', $this->tableName . '.id = price.id_product', 'LEFT' );
 			$this->db->join( 'store', 'store.id = price.id_store', 'LEFT' );
 
+			if( $distance > 0 )
+				$this->db->having('distance <=', $distance );
+
 			$this->db->like('product.name', $q);
+
 			$this->db->group_by( 'store.id' );
-			$this->db->order_by( 'price_creation', 'DESC');
-			$this->db->order_by( 'price.value', 'DESC');
 			$this->db->order_by( 'distance', 'ASC');
+			$this->db->order_by( 'price.value', 'DESC');
+			$this->db->order_by( 'price_creation', 'DESC');
 			$this->db->limit( 5 );
 			return $this->db->get( $this->getTableName( ) )->result_array( );
 		}
 
-		public function getLastPrices( $id, $latitude, $longitud ) {
+		public function getLastPrices( $id, $latitude, $longitude ) {
 
 			$this->db->select( $this->tableName . '.*,
 				brand.name AS brand,
@@ -93,7 +106,7 @@
 							)
 							* POWER(
 								SIN(
-									(store.longitude - ' . $longitud . ') * pi()/180 / 2
+									(store.longitude - ' . $longitude . ') * pi()/180 / 2
 								)
 								,2
 							)

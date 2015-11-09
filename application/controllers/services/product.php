@@ -5,6 +5,10 @@
 	/**
 	 * Class Reports
 	 *
+	 * @property Product_model $product_model
+	 * @property Price_model $price_model
+	 * @property Store_model $store_model
+	 * @property Brand_model $brand_model
 	 */
 	class Product extends ServicesController {
 		protected $scope = 'services';
@@ -152,14 +156,16 @@
 			if( strpos( $q, '~' ) )
 				$q = trim( substr( $q, 0, strpos( $q, '~' ) ) );
 
-			$this->data['data'] = $this->product_model->getLast( $q, $latitude, $longitude );
+			$this->data['data'] = $this->product_model->getLast( $q, $latitude, $longitude, 5000 );
 			foreach( $this->data['data'] as &$product ) {
 				$product['price'] = '$' . number_format( $product['price'], 0, ',', '.');
 				$product['title'] = $product['name'] . ( $product['size'] ? ' ~ ' . $product['size'] : '' ) . ( $product['brand'] ? ' [' . $product['brand'] . '] ' : '' );
-				$product['description'] = ( $product['store'] ? '@' . $product['store'] : '' ) . ( $product['price_creation'] ? ' ~ ' . $this->toPastHumanDate( $product['price_creation'] ) : '' );
+				$product['description'] = ( $product['store'] ? '@' . $product['store'] : '' );
 
 				if( ( $latitude || $longitude ) && ( $product['store_latitude'] || $product['store_longitude'] ) )
-					$product['description'] .= ' a ' . $this->toHumanDistance( $latitude, $longitude, $product['store_latitude'], $product['store_longitude'] );
+					$product['description'] .= ' ~ ' . $this->toHumanDistance( $product['distance'] );
+
+				$product['description'] .= ( $product['price_creation'] ? ' ~ ' . $this->toPastHumanDate( $product['price_creation'] ) : '' );
 
 				unset( $product['id_account'], $product['id_brand'], $product['id_store'], $product['key'], $product['store_latitude'], $product['store_longitude'] );
 

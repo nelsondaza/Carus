@@ -960,13 +960,6 @@
 
 
 /*
-* buscar en todo el nombre la parte de texto [LISTO]
-*
-* resultado de comparacion de precios.
-* tiendas más cercanas a unos metros de distancia. (200mts)
-* cercanos a 200mts ... si hay no se muestran más
-* si no, el más cerca a 300mts.
-*
 *
 * en el buscador mostrar resultados en mapa.
 *

@@ -345,9 +345,9 @@
 				}
 			} else if ($dias <= 7) {
 				if ($dias == 1) {
-					$text = "hace un dia";
+					$text = "hace un día";
 				} else {
-					$text = "hace $dias dias";
+					$text = "hace $dias días";
 				}
 			} else if ($semanas <= 4) {
 				if ($semanas == 1) {
@@ -365,8 +365,29 @@
 				if ($anio == 1) {
 					$text = "hace un año";
 				} else {
-					$text = "hace $anio año;s";
+					$text = "hace $anio años";
 				}
+			}
+
+			return $text;
+		}
+
+		public final function toHumanDistance($distance)
+		{
+			$distance = (float)$distance;
+
+			$metros = $distance;
+
+			$text = "";
+
+			if ($metros <= 3) {
+				$text = " aquí";
+			}
+			else if ($metros <= 500) {
+				$text = number_format($metros,1,'.','') . " m";
+			}
+			else {
+				$text = number_format($metros/1000,1,'.','') . " Km";
 			}
 
 			return $text;
@@ -381,25 +402,21 @@
 		 *
 		 * @return float
 		 */
-		function toHumanDistance($lat1, $lng1, $lat2, $lng2) {
+		function toHumanDistanceLatLng($lat1, $lng1, $lat2, $lng2) {
 			$pi80 = M_PI / 180;
 			$lat1 *= $pi80;
 			$lng1 *= $pi80;
 			$lat2 *= $pi80;
 			$lng2 *= $pi80;
 
-			$r = 6372.797560856; // mean radius of Earth in km
+			$r = 6372797.560856; // mean radius of Earth in km
 			$dlat = $lat2 - $lat1;
 			$dlng = $lng2 - $lng1;
 			$a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlng / 2) * sin($dlng / 2);
 			$c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-			$km = $r * $c;
+			$mts = $r * $c;
 
-			if( $km < 1 )
-				$km = floor( $km / 1000 ) . ' m.';
-			else
-				$km = floor( $km ) . ' km.';
-			return $km;
+			return $this->toHumanDistance( $mts );
 		}
 
 	}
