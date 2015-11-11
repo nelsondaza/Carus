@@ -60,7 +60,7 @@ class Authentication {
 			redirect($this->CI->input->get('continue'));
 		}
 
-		redirect('');
+		redirect('admin');
 	}
 
 	// --------------------------------------------------------------------

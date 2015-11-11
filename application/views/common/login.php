@@ -16,6 +16,8 @@
 		<div class="ten wide column mobile eight wide tablet six wide computer column">
 			<h1><a href="<?= base_url() ?>" aria-label="Carus">Carus</a></h1>
 			<form id="login-form" class="ui small form" autocomplete="off" action="" method="post">
+				<input type="text" style="display:none">
+				<input type="password" style="display:none">
 				<div class="field">
 					<div class="ui left icon input">
 						<i class="at icon"></i>
@@ -35,6 +37,8 @@
 				<div class="ui error message"></div>
 			</form>
 			<form id="password-form" class="ui small form hidden" autocomplete="off" action="" method="post">
+				<input type="text" style="display:none">
+				<input type="password" style="display:none">
 				<div class="field">
 					<div class="ui left icon input">
 						<i class="at icon"></i>
@@ -45,6 +49,8 @@
 				<div class="ui error message"></div>
 			</form>
 			<form id="register-form" class="ui small form hidden" autocomplete="off" action="" method="post">
+				<input type="text" style="display:none">
+				<input type="password" style="display:none">
 				<div class="field">
 					<div class="ui left icon input">
 						<i class="user icon"></i>
